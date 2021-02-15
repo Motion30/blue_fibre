@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "922310729475",
+    "project_id": "blue-fibre",
+    "storage_bucket": "blue-fibre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922310729475:android:863f02793adb1bd049d336",
+        "android_client_info": {
+          "package_name": "com.example.blue_fibre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922310729475-dcm05mdi2s5895edldm90q0mg0apqqbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOUpHPuxEKxtHnErX1mxhFqFwf7G7QVNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922310729475-dcm05mdi2s5895edldm90q0mg0apqqbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
