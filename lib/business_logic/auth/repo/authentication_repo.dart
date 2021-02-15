@@ -56,6 +56,59 @@ class AuthenticationRepo {
     }
   }
 
+  Future registerUserWithEmailAndPassword({
+    @required String email,
+    @required String password,
+    @required String fullName,
+    @required String userName,
+    @required int phoneNumber,
+  }) async {
+    try {
+      final bool userNameExist = await checkUserName(userName);
+
+      if (userNameExist == false) {
+        final UserCredential result =
+            await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        final User user = result.user;
+
+        final UserModel userData = UserModel(
+          uid: user.uid,
+          email: email,
+          fullName: fullName,
+          phoneNumber: phoneNumber,
+          profilePicUrl: null,
+          timestamp: Timestamp.now(),
+          userName: userName,
+        );
+
+        await writeUserDataToDataBase(userData: userData);
+        // await HiveMethods().saveUserDataToLocalDb(userData: userData.toMap());
+
+        return userFromFirebase(user);
+      } else {
+        throw Exception('User Name Already Exist');
+      }
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      throw Exception('Error: $e');
+    }
+  }
+
   Future<UserModel> getUserDetails({@required String uid}) async {
     UserModel user;
 
@@ -75,5 +128,49 @@ class AuthenticationRepo {
     return user;
   }
 
-  //
+  Future<void> resetEmail({@required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<bool> checkPhoneNumber(int phoneNumber) async {
+    bool phoneNumberExist = false;
+    await _userCollectionRef
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.length > 1) {
+        phoneNumberExist = true;
+      }
+    });
+
+    return phoneNumberExist;
+  }
+
+  Future<bool> checkUserName(String userName) async {
+    bool userNameExist = false;
+    await _userCollectionRef
+        .where('userName', isEqualTo: userName)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.length > 1) {
+        userNameExist = true;
+      }
+    });
+
+    return userNameExist;
+  }
+
+  Future<void> writeUserDataToDataBase({@required UserModel userData}) async {
+    final DocumentReference userRef = _userCollectionRef.doc(userData.uid);
+
+    await userRef.set(userData.toMap());
+  }
+
+//
 }

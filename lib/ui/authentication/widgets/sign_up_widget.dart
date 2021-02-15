@@ -1,5 +1,4 @@
 import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
-import 'package:blue_fibre/ui/home/pages/home_page.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ class SignUpPageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size.width,
-      height: size.height * 0.30,
+      height: size.height * 0.25,
       padding: const EdgeInsets.only(left: 10.0, top: 20.0),
       child: const CustomText(
         text: 'Hello\nSign-Up To\nGet Started',
@@ -49,18 +48,28 @@ class _SignUpPageFormState extends State<SignUpPageForm> {
     if (formState.validate()) {
       final String email = emailController.text.trim();
       final String password = passwordController.text.trim();
+      final int phone = int.parse(phoneController.text.trim());
+      final String fullName = fullNameController.text.trim();
+      final String userName = userNameController.text.trim();
 
       isLoading.value = true;
       final AuthenticationRepo auth = AuthenticationRepo();
 
       try {
-        // await auth.loginWithEmailAndPassword(email: email, password: password);
-        debugPrint('SignUp successfull');
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute<Widget>(
-            builder: (_) => HomePage(),
-          ),
+        await auth.registerUserWithEmailAndPassword(
+          email: email,
+          password: password,
+          fullName: fullName,
+          phoneNumber: phone,
+          userName: userName,
         );
+
+        debugPrint('SignUp successfull');
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute<Widget>(
+        //     builder: (_) => HomePage(),
+        //   ),
+        // );
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -96,27 +105,24 @@ class _SignUpPageFormState extends State<SignUpPageForm> {
             CustomTextField(
               controller: userNameController,
               title: 'User Name',
-              hideText: true,
               length: 3,
             ),
             const SizedBox(height: 15.0),
             CustomTextField(
               controller: emailController,
               title: 'Email Address',
-              hideText: true,
             ),
             const SizedBox(height: 15.0),
             CustomTextField(
               controller: phoneController,
               title: 'Phone Number',
-              hideText: true,
+              keyboardType: TextInputType.number,
               length: 10,
             ),
             const SizedBox(height: 15.0),
             CustomTextField(
               controller: passwordController,
               title: 'Password',
-              hideText: true,
               length: 6,
             ),
             const SizedBox(height: 15.0),
