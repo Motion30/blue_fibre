@@ -1,4 +1,5 @@
 import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
+import 'package:blue_fibre/ui/home/pages/home_page.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +66,18 @@ class _SignUpPageFormState extends State<SignUpPageForm> {
         );
 
         debugPrint('SignUp successfull');
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute<Widget>(
-        //     builder: (_) => HomePage(),
-        //   ),
-        // );
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<Widget>(
+            builder: (_) => HomePage(),
+          ),
+        );
       } catch (e) {
         debugPrint(e.toString());
+        CustomWarningDialog.showCustomDialog(
+          context: context,
+          title: 'Warning',
+          message: e.toString(),
+        );
       }
 
       isLoading.value = false;

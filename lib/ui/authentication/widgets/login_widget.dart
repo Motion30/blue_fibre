@@ -60,6 +60,11 @@ class _LoginPageFormState extends State<LoginPageForm> {
         );
       } catch (e) {
         debugPrint(e.toString());
+        CustomWarningDialog.showCustomDialog(
+            context: context,
+            title: 'Warning',
+            message: e.toString(),
+        );
       }
 
       isLoading.value = false;
