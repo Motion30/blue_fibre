@@ -9,9 +9,9 @@ class HiveInitMethods {
     /// This method will be called at the start of the app, this will start
     /// a local Database this will host/store the user Data.
 
-    Directory documentDir = await getApplicationSupportDirectory();
+    final Directory documentDir = await getApplicationSupportDirectory();
     Hive.init(documentDir.path);
-    await Hive.openBox('userData');
+    await Hive.openBox('userDataDb');
     debugPrint('open userDat');
   }
 

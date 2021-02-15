@@ -19,13 +19,18 @@ class LoginPage extends StatelessWidget {
   Widget body(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return Column(
-      children: <Widget>[
-        LoginPageMessage(size: size),
-        LoginPageForm(size: size),
-        LoginPageMoreOptions(size: size, navigate: () => callBack()),
-        Expanded(child: Container(color: Colors.white)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          LoginPageMessage(size: size),
+          LoginPageForm(size: size),
+          LoginPageMoreOptions(size: size, navigate: () => callBack()),
+          SizedBox(
+            height: size.height * 0.305,
+            child: Container(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

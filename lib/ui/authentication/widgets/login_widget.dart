@@ -1,3 +1,5 @@
+import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
+import 'package:blue_fibre/ui/home/pages/home_page.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,33 @@ class _LoginPageFormState extends State<LoginPageForm> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+
+  Future<void> validate() async {
+    final FormState formState = formKey.currentState;
+
+    if (formState.validate()) {
+      final String email = emailController.text.trim();
+      final String password = passwordController.text.trim();
+
+      isLoading.value = true;
+      final AuthenticationRepo auth = AuthenticationRepo();
+
+      try {
+        await auth.loginWithEmailAndPassword(email: email, password: password);
+        debugPrint('Login successfull');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<Widget>(
+            builder: (_) => HomePage(),
+          ),
+        );
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+
+      isLoading.value = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +87,6 @@ class _LoginPageFormState extends State<LoginPageForm> {
             CustomTextField(
               controller: emailController,
               title: 'Email Address',
-              // inputBorder: const UnderlineInputBorder(),
             ),
             const SizedBox(height: 15.0),
             CustomTextField(
@@ -67,10 +95,19 @@ class _LoginPageFormState extends State<LoginPageForm> {
               hideText: true,
             ),
             const SizedBox(height: 15.0),
-            CustomButton(
-              size: MediaQuery.of(context).size,
-              title: 'Sign In',
-              onPress: () => debugPrint('1'),
+            ValueListenableBuilder<bool>(
+              valueListenable: isLoading,
+              builder: (_, bool value, Widget child) {
+                if (value == true) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return CustomButton(
+                    size: MediaQuery.of(context).size,
+                    title: 'Sign In',
+                    onPress: () => validate(),
+                  );
+                }
+              },
             ),
           ],
         ),
