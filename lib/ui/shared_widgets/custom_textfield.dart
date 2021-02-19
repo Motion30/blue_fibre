@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
     this.length = 1,
     this.inputBorder = const OutlineInputBorder(),
     this.keyboardType = TextInputType.text,
+    this.maxLine = 1,
   });
 
   final TextEditingController controller;
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
   final int length;
   final InputBorder inputBorder;
   final TextInputType keyboardType;
+  final int maxLine;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class CustomTextField extends StatelessWidget {
         filled: true,
       ),
       keyboardType: keyboardType,
+      maxLines: maxLine,
     );
   }
 }

@@ -30,6 +30,7 @@ class AuthenticationRepo {
     return _auth.currentUser.uid;
   }
 
+
   Future<dynamic> loginWithEmailAndPassword({
     @required String email,
     @required String password,
