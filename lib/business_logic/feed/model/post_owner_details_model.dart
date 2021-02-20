@@ -8,8 +8,8 @@ class PostOwnerDetailsModel {
 
   factory PostOwnerDetailsModel.fromMap(Map<String, dynamic> map) {
     return PostOwnerDetailsModel(
-      userName: map['userName'] as String,
-      profileImageUrl: map['profileImageUrl'] as String,
+      userName: map == null ? 'Test User' : map['userName'] as String,
+      profileImageUrl: map == null ? null : map['profileImageUrl'] as String,
     );
   }
 

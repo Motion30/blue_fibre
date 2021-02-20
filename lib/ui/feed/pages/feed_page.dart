@@ -3,6 +3,7 @@ import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:flutter/material.dart';
 
 class FeedPage extends StatelessWidget {
+  const FeedPage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

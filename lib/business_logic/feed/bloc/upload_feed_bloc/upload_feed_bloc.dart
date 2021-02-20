@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:blue_fibre/business_logic/feed/repo/feed_repo.dart';
+import 'package:blue_fibre/business_logic/feed/repo/upload_feed_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ part 'upload_feed_state.dart';
 
 class UploadFeedBloc extends Bloc<UploadFeedEvent, UploadFeedState> {
   UploadFeedBloc() : super(InitialUploadFeedState());
-  final FeedRepo _feedRepo = FeedRepo();
+  final UploadFeedRepo _feedRepo = UploadFeedRepo();
 
   @override
   Stream<UploadFeedState> mapEventToState(

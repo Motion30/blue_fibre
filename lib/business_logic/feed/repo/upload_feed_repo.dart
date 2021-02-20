@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class FeedRepo {
+class UploadFeedRepo {
   static const String _feed = 'feeds';
   static const String postImagePath = 'images/posts';
 

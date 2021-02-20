@@ -19,7 +19,7 @@ class PostModel {
     return PostModel(
       id: map['id'] as String,
       description: map['description'] as String,
-      imageUrl: map['imageUrl'] as List<String>,
+      imageUrl: List<String>.from(map['imageUrl'] as List<dynamic>),
       likesCount: map['likesCount'] as int,
       commentCount: map['commentCount'] as int,
       timestamp: map['timestamp'] as Timestamp,
@@ -48,7 +48,6 @@ class PostModel {
       'timestamp': Timestamp.now(),
       'postOwnerDetails': postOwnerDetails.toMap(),
       'ownerId': ownerId,
-
     };
   }
 }

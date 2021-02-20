@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   final ValueNotifier<int> currentPageIndex = ValueNotifier<int>(0);
-
-  // int currentIndex = 0;
   final List<Widget> screenList = <Widget>[
     FeedPage(),
     ChatPage(),
