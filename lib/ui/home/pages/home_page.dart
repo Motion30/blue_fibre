@@ -17,48 +17,50 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ValueListenableBuilder<int>(
-        valueListenable: currentPageIndex,
-        builder: (_, int value, Widget child) {
-          return screenList[value];
-        },
-      ),
-      bottomNavigationBar: ValueListenableBuilder<int>(
-        valueListenable: currentPageIndex,
-        builder: (_, int value, Widget child) {
-          return BottomNavigationBar(
-            currentIndex: value,
-            onTap: (int index) => currentPageIndex.value = index,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined, color: Colors.grey),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.chat_bubble_outline_outlined,
-                  color: Colors.grey,
+    return SafeArea(
+      child: Scaffold(
+        body: ValueListenableBuilder<int>(
+          valueListenable: currentPageIndex,
+          builder: (_, int value, Widget child) {
+            return screenList[value];
+          },
+        ),
+        bottomNavigationBar: ValueListenableBuilder<int>(
+          valueListenable: currentPageIndex,
+          builder: (_, int value, Widget child) {
+            return BottomNavigationBar(
+              currentIndex: value,
+              onTap: (int index) => currentPageIndex.value = index,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined, color: Colors.grey),
+                  label: 'Home',
                 ),
-                label: 'Messages',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notifications_none_outlined,
-                  color: Colors.grey,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.chat_bubble_outline_outlined,
+                    color: Colors.grey,
+                  ),
+                  label: 'Messages',
                 ),
-                label: 'Notification',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person_outline_rounded,
-                  color: Colors.grey,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.notifications_none_outlined,
+                    color: Colors.grey,
+                  ),
+                  label: 'Notification',
                 ),
-                label: 'Profile',
-              ),
-            ],
-          );
-        },
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person_outline_rounded,
+                    color: Colors.grey,
+                  ),
+                  label: 'Profile',
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

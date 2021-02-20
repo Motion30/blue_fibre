@@ -22,7 +22,7 @@ class UploadBodyWidget extends StatefulWidget {
 }
 
 class _UploadBodyWidgetState extends State<UploadBodyWidget> {
-  final ValueNotifier<List<File>> imageList = ValueNotifier<List<File>>([]);
+  final ValueNotifier<List<File>> imageList = ValueNotifier<List<File>>(<File>[]);
 
   final TextEditingController textController = TextEditingController();
   final StreamController<String> uploadReportStream =

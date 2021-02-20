@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
 import 'package:blue_fibre/business_logic/feed/model/post_model.dart';
+import 'package:blue_fibre/business_logic/feed/model/post_owner_details_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class FeedRepo {
   static const String _feed = 'feeds';
@@ -66,7 +69,16 @@ class FeedRepo {
       uploadStreamReport: uploadStreamReport,
     );
 
-    final PostModel post = PostModel(description: des, imageUrl: _imagesUrls);
+    final Map<String, dynamic> _userDetails =
+        await GetIt.instance.get<AuthenticationRepo>().getLoginUserDetails();
+
+    final PostModel post = PostModel(
+      description: des,
+      imageUrl: _imagesUrls,
+      ownerId: GetIt.instance.get<AuthenticationRepo>().getUserUid(),
+      postOwnerDetails: PostOwnerDetailsModel.fromMap(_userDetails),
+    );
+
     await _addPostToFirestore(post);
 
     uploadStreamReport.add('Done Uploading Post');

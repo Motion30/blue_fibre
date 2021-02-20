@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:blue_fibre/business_logic/feed/repo/feed_repo.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'upload_feed_event.dart';
 part 'upload_feed_state.dart';
@@ -25,8 +26,10 @@ class UploadFeedBloc extends Bloc<UploadFeedEvent, UploadFeedState> {
           des: event.des,
         );
         yield LoadedUploadFeedState();
-      } catch (e) {
-        yield ErrorUploadFeedState(e.message.toString());
+      } catch (e, s) {
+        debugPrint(e.toString());
+        debugPrint(s.toString());
+        yield ErrorUploadFeedState(e?.message.toString());
       }
     }
   }

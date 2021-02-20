@@ -30,6 +30,12 @@ class AuthenticationRepo {
     return _auth.currentUser.uid;
   }
 
+  Future<Map<String, dynamic>> getLoginUserDetails() async {
+    final DocumentSnapshot documentSnapshot =
+        await _userCollectionRef.doc(getUserUid()).get();
+
+    return documentSnapshot.data();
+  }
 
   Future<dynamic> loginWithEmailAndPassword({
     @required String email,
@@ -76,7 +82,7 @@ class AuthenticationRepo {
 
         final User user = result.user;
 
-        final UserModel userData = UserModel(
+        final PostOwnerDetails userData = PostOwnerDetails(
           uid: user.uid,
           email: email,
           fullName: fullName,
@@ -110,12 +116,12 @@ class AuthenticationRepo {
     }
   }
 
-  Future<UserModel> getUserDetails({@required String uid}) async {
-    UserModel user;
+  Future<PostOwnerDetails> getUserDetails({@required String uid}) async {
+    PostOwnerDetails user;
 
     try {
       final DocumentSnapshot document = await _userCollectionRef.doc(uid).get();
-      user = UserModel.fromMap(document.data());
+      user = PostOwnerDetails.fromMap(document.data());
       // final HiveMethods hiveMethods = _getIt.get<HiveMethods>();
       // await hiveMethods.saveUserDataToLocalDb(userData: user.toMap());
     } on SocketException {
@@ -167,7 +173,7 @@ class AuthenticationRepo {
     return userNameExist;
   }
 
-  Future<void> writeUserDataToDataBase({@required UserModel userData}) async {
+  Future<void> writeUserDataToDataBase({@required PostOwnerDetails userData}) async {
     final DocumentReference userRef = _userCollectionRef.doc(userData.uid);
 
     await userRef.set(userData.toMap());
