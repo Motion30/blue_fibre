@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GetFeedRepo {
-  static const int _perPage = 15;
+  static const int _perPage = 5;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final CollectionReference _postCollectionRef =
@@ -19,12 +19,17 @@ class GetFeedRepo {
 
   DocumentSnapshot _lastDoc;
   bool _hasMore = true;
-  bool _isFetching = false;
+  bool isFetching = false;
 
-  void getPost(BuildContext context) => _fetchPost(context);
+  Future<void> getPost(BuildContext context) async {
+    _fetchPost(context);
+    await Future.delayed(const Duration(seconds: 3));
+  }
 
   void _fetchPost(BuildContext context) {
-    Query _postQuery = _postCollectionRef.orderBy('timestamp', descending: true).limit(_perPage);
+    Query _postQuery = _postCollectionRef
+        .orderBy('timestamp', descending: true)
+        .limit(_perPage);
 
     if (_lastDoc != null) {
       _postQuery = _postQuery.startAfterDocument(_lastDoc);
@@ -32,7 +37,7 @@ class GetFeedRepo {
 
     if (!_hasMore) return;
 
-    _isFetching = true;
+    isFetching = true;
 
     final int _currentPageIndex = _allPagesList.length;
 
@@ -73,6 +78,6 @@ class GetFeedRepo {
       );
     }
 
-    _isFetching = false;
+    isFetching = false;
   }
 }

@@ -17,18 +17,21 @@ class PostFooterWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: const <Widget>[
+            children: <Widget>[
               PostIconWidget(
                 icon: Icons.favorite_border_outlined,
-                // postOperationType: PostOperationType.like,
+                postOperationType: PostOperationType.like,
+                postId: post.id,
               ),
               PostIconWidget(
                 icon: Icons.mode_comment_outlined,
+                postId: post.id,
                 // postOperationType: PostOperationType.comment,
               ),
-              Spacer(),
+              const Spacer(),
               PostIconWidget(
                 icon: Icons.bookmarks_outlined,
+                postId: post.id,
                 // postOperationType: PostOperationType.bookmark,
               ),
             ],

@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadFeedRepo {
   static const String _feed = 'feeds';
@@ -54,6 +55,7 @@ class UploadFeedRepo {
   }
 
   Future<void> _addPostToFirestore(PostModel post) async {
+    print(post.id);
     await _feedCollectionRef.doc(post.id).set(post.toMap());
   }
 
@@ -73,6 +75,7 @@ class UploadFeedRepo {
         await GetIt.instance.get<AuthenticationRepo>().getLoginUserDetails();
 
     final PostModel post = PostModel(
+      id: Uuid().v4(),
       description: des,
       imageUrl: _imagesUrls,
       ownerId: GetIt.instance.get<AuthenticationRepo>().getUserUid(),

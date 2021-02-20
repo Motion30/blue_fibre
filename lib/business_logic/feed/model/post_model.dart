@@ -12,7 +12,7 @@ class PostModel {
     this.likesCount = 0,
     this.commentCount = 0,
     this.timestamp,
-    this.id,
+    @required this.id,
   });
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
@@ -40,7 +40,7 @@ class PostModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': Uuid().v4(),
+      'id': id,
       'description': description,
       'imageUrl': imageUrl,
       'likesCount': likesCount,
