@@ -10,19 +10,13 @@ class FeedHomePageBodyWidget extends StatefulWidget {
   _FeedHomePageBodyWidgetState createState() => _FeedHomePageBodyWidgetState();
 }
 
-class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget>
-    with AutomaticKeepAliveClientMixin {
+class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget> {
   @override
   void initState() {
     super.initState();
     GetIt.instance.get<GetFeedRepo>().getPost(context);
   }
 
-  @override
-  void dispose() {
-    GetIt.instance.get<GetFeedRepo>().allRequestedFeed.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +50,4 @@ class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
 }

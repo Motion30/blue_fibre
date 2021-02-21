@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   final ValueNotifier<int> currentPageIndex = ValueNotifier<int>(0);
   final List<Widget> screenList = <Widget>[
-    FeedPage(),
-    ChatPage(),
-    NotificationPage(),
-    ProfilePage(),
+    const FeedPage(),
+    const ChatPage(),
+    const NotificationPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -20,7 +20,10 @@ class HomePage extends StatelessWidget {
         body: ValueListenableBuilder<int>(
           valueListenable: currentPageIndex,
           builder: (_, int value, Widget child) {
-            return screenList[value];
+            return IndexedStack(
+              index: value,
+              children: screenList,
+            );
           },
         ),
         bottomNavigationBar: ValueListenableBuilder<int>(
@@ -62,8 +65,11 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-// Widget body(BuildContext context){
-//   return
-// }
 }
+
+// ValueListenableBuilder<int>(
+// valueListenable: currentPageIndex,
+// builder: (_, int value, Widget child) {
+// return screenList[value];
+// },
+// ),
