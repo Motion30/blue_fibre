@@ -1,5 +1,5 @@
 import 'package:blue_fibre/ui/chat/pages/chat_page.dart';
-import 'package:blue_fibre/ui/feed/pages/feed_page.dart';
+import 'package:blue_fibre/ui/feed/pages/home_feed_page.dart';
 import 'package:blue_fibre/ui/notification/pages/notification_page.dart';
 import 'package:blue_fibre/ui/profile/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   final ValueNotifier<int> currentPageIndex = ValueNotifier<int>(0);
   final List<Widget> screenList = <Widget>[
-    const FeedPage(),
+    const FeedHomePage(),
     const ChatPage(),
     const NotificationPage(),
     const ProfilePage(),
