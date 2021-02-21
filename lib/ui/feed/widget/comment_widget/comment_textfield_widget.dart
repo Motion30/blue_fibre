@@ -1,4 +1,5 @@
 import 'package:blue_fibre/business_logic/feed/bloc/comment_bloc/comment_bloc.dart';
+import 'package:blue_fibre/ui/feed/widget/comment_widget/send_comment_button.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +20,31 @@ class _CommentPageTextFieldState extends State<CommentPageTextField> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CommentBloc, CommentState>(
-        listener: (BuildContext context, CommentState state){
-          if(state is LoadedCommentState){
-            _textEditingController.clear();
-          }
-        },
+      listener: (BuildContext context, CommentState state) {
+        if (state is LoadedCommentState) {
+          _textEditingController.clear();
+          CustomWarningDialog.showSnackBar(
+            context: context,
+            message: 'Comment Added. Refresh page to see latest comment',
+            warning: false,
+          );
+        }
+        if (state is ErrorCommentState) {
+          CustomWarningDialog.showSnackBar(
+            context: context,
+            message: state.message,
+          );
+        }
+      },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,
         child: Row(
           children: <Widget>[
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.84,
+              width: MediaQuery.of(context).size.width * 0.85,
               child: CustomTextField(
                 controller: _textEditingController,
                 title: 'Add a comment....',
@@ -53,43 +65,6 @@ class _CommentPageTextFieldState extends State<CommentPageTextField> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class SendCommentButton extends StatelessWidget {
-  const SendCommentButton({this.callBack});
-
-  final Function callBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<CommentBloc, CommentState>(
-      listener: (BuildContext context, CommentState state) {
-        if (state is ErrorCommentState) {
-          CustomWarningDialog.showSnackBar(
-            context: context,
-            message: state.message,
-          );
-        }
-      },
-      builder: (BuildContext context, CommentState state) {
-        if (state is LoadingCommentState) {
-          return const SizedBox(
-            height: 25,
-            width: 25,
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        return InkWell(
-          onTap: () => callBack(),
-          child: Container(
-            padding: const EdgeInsets.all(5.0),
-            child: const Center(child: Icon(Icons.send, color: Colors.green)),
-          ),
-        );
-      },
     );
   }
 }

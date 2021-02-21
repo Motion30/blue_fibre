@@ -18,7 +18,7 @@ class GetFeedRepo {
   final List<List<PostModel>> _allPagesList = <List<PostModel>>[];
 
   DocumentSnapshot _lastDoc;
-  bool _hasMore = true;
+  bool hasMore = true;
   bool isFetching = false;
 
   Future<void> getPost(BuildContext context) async {
@@ -35,7 +35,7 @@ class GetFeedRepo {
       _postQuery = _postQuery.startAfterDocument(_lastDoc);
     }
 
-    if (!_hasMore) return;
+    if (!hasMore) return;
 
     isFetching = true;
 
@@ -61,7 +61,7 @@ class GetFeedRepo {
           _lastDoc = querySnapshot.docs.last;
         }
 
-        _hasMore = _currentPageList.length == _perPage;
+        hasMore = _currentPageList.length == _perPage;
 
         final List<PostModel> allPost = _allPagesList.fold(
             <PostModel>[],
