@@ -1,4 +1,5 @@
 import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
+import 'package:blue_fibre/business_logic/feed/repo/comment_repo.dart';
 import 'package:blue_fibre/business_logic/feed/repo/get_feeds_repo.dart';
 import 'package:blue_fibre/business_logic/feed/repo/update_post_details_repo.dart';
 import 'package:blue_fibre/business_logic/feed/repo/upload_feed_repo.dart';
@@ -18,5 +19,6 @@ class ServiceLocator {
     getIt.registerLazySingleton<UploadFeedRepo>(() => UploadFeedRepo());
     getIt.registerLazySingleton<GetFeedRepo>(() => GetFeedRepo());
     getIt.registerLazySingleton<UpdatePostInfoRepo>(() => UpdatePostInfoRepo());
+    getIt.registerLazySingleton<CommentRepo>(() => CommentRepo());
   }
 }

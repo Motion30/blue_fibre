@@ -26,7 +26,7 @@ class PostFooterWidget extends StatelessWidget {
               PostIconWidget(
                 icon: Icons.mode_comment_outlined,
                 postId: post.id,
-                // postOperationType: PostOperationType.comment,
+                postOperationType: PostOperationType.comment,
               ),
               const Spacer(),
               PostIconWidget(

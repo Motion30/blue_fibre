@@ -55,7 +55,6 @@ class UploadFeedRepo {
   }
 
   Future<void> _addPostToFirestore(PostModel post) async {
-    print(post.id);
     await _feedCollectionRef.doc(post.id).set(post.toMap());
   }
 

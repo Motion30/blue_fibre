@@ -29,4 +29,22 @@ class CustomWarningDialog {
       },
     );
   }
+
+  static void showSnackBar({
+    BuildContext context,
+    String message,
+    bool warning = true,
+  }) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: warning ? Colors.red : Colors.green,
+        duration:
+            warning ? const Duration(seconds: 2) : const Duration(seconds: 1),
+      ),
+    );
+  }
 }

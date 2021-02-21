@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
     this.inputBorder = const OutlineInputBorder(),
     this.keyboardType = TextInputType.text,
     this.maxLine = 1,
+    this.showUnderLine = true,
   });
 
   final TextEditingController controller;
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
   final InputBorder inputBorder;
   final TextInputType keyboardType;
   final int maxLine;
+  final bool showUnderLine;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +35,18 @@ class CustomTextField extends StatelessWidget {
           return null;
         }
       },
-      decoration: InputDecoration(
-        border: inputBorder,
-        hintText: title,
-        fillColor: Colors.white70,
-        filled: true,
-      ),
+      decoration: showUnderLine
+          ? InputDecoration(
+              border: inputBorder,
+              hintText: title,
+              fillColor: Colors.white70,
+              filled: true,
+            )
+          : InputDecoration.collapsed(
+              hintText: title,
+              fillColor: Colors.white70,
+              filled: true,
+            ),
       keyboardType: keyboardType,
       maxLines: maxLine,
     );

@@ -14,6 +14,22 @@ class PostIconWidget extends StatelessWidget {
   final IconData icon;
   final String postId;
 
+  void action(BuildContext context) {
+    switch (postOperationType) {
+      case PostOperationType.like:
+        context
+            .read<UpdatePostInfoBloc>()
+            .add(UpdateActionEvent(postOperationType, postId));
+        break;
+      case PostOperationType.comment:
+        Navigator.of(context).pushNamed('/commentPage', arguments: postId);
+        break;
+      case PostOperationType.bookmark:
+        // TODO: Handle this case.
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,9 +49,7 @@ class PostIconWidget extends StatelessWidget {
           }
 
           return InkWell(
-            onTap: () => context
-                .read<UpdatePostInfoBloc>()
-                .add(UpdateActionEvent(postOperationType, postId)),
+            onTap: () => action(context),
             child: Icon(icon, color: Colors.grey[700]),
           );
         },
