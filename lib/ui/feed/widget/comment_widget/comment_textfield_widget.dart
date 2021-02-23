@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommentPageTextField extends StatefulWidget {
-  const CommentPageTextField({@required this.postId});
+  const CommentPageTextField({@required this.postId, @required this.postOwnerId});
 
   final String postId;
+  final String postOwnerId;
 
   @override
   _CommentPageTextFieldState createState() => _CommentPageTextFieldState();
@@ -57,7 +58,7 @@ class _CommentPageTextFieldState extends State<CommentPageTextField> {
                   BlocProvider.of<CommentBloc>(context).add(
                     AddCommentEvent(
                         commentText: _textEditingController.text.trim(),
-                        postId: widget.postId),
+                        postId: widget.postId, postOwnerId: widget.postOwnerId),
                   );
                 }
               },

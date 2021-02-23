@@ -7,22 +7,30 @@ class PostIconWidget extends StatelessWidget {
   const PostIconWidget({
     @required this.icon,
     this.postId,
+    this.postOwnerId,
     this.postOperationType,
   });
 
   final PostOperationType postOperationType;
   final IconData icon;
   final String postId;
+  final String postOwnerId;
 
   void action(BuildContext context) {
     switch (postOperationType) {
       case PostOperationType.like:
-        context
-            .read<UpdatePostInfoBloc>()
-            .add(UpdateActionEvent(postOperationType, postId));
+        context.read<UpdatePostInfoBloc>().add(UpdateActionEvent(
+              postOwnerId: postOwnerId,
+              postOperationType: postOperationType,
+              postId: postId,
+              // postOperationType, postId,
+            ));
         break;
       case PostOperationType.comment:
-        Navigator.of(context).pushNamed('/commentPage', arguments: postId);
+        Navigator.of(context).pushNamed(
+          '/commentPage',
+          arguments: <String>[postId, postOwnerId],
+        );
         break;
       case PostOperationType.bookmark:
         // TODO: Handle this case.

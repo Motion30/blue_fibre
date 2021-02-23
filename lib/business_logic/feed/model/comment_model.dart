@@ -9,6 +9,7 @@ class CommentModel {
     @required this.imageUrls,
     @required this.commenterId,
     @required this.postCommentId,
+    @required this.postOwnerId,
     @required this.timestamp,
     @required this.postOwnerDetails,
   });
@@ -20,6 +21,7 @@ class CommentModel {
       imageUrls: List<String>.from(map['imageUrls'] as List<dynamic>),
       commenterId: map['commenterId'] as String,
       postCommentId: map['postCommentId'] as String,
+      postOwnerId: map['postOwnerId'] as String,
       postOwnerDetails: PostOwnerDetailsModel.fromMap(
           map['postOwnerDetails'] as Map<String, dynamic>),
       timestamp: map['timestamp'] as Timestamp,
@@ -31,6 +33,7 @@ class CommentModel {
   final List<String> imageUrls;
   final String commenterId;
   final String postCommentId;
+  final String postOwnerId;
   final Timestamp timestamp;
   final PostOwnerDetailsModel postOwnerDetails;
 
@@ -41,6 +44,7 @@ class CommentModel {
       'imageUrls': imageUrls,
       'commenterId': commenterId,
       'postCommentId': postCommentId,
+      'postOwnerId': postOwnerId,
       'postOwnerDetails': postOwnerDetails.toMap(),
       'timestamp': timestamp,
     };

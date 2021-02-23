@@ -34,7 +34,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           commentId: Uuid().v1(),
           imageUrls: <String>[],
           postCommentId: event.postId,
-          timestamp: Timestamp.now(),
+          timestamp: Timestamp.now(),postOwnerId: event.postOwnerId,
         );
 
         await GetIt.instance.get<CommentRepo>().makeComment(comment);

@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'update_post_info_event.dart';
+
 part 'update_post_info_state.dart';
 
 class UpdatePostInfoBloc
@@ -26,7 +27,10 @@ class UpdatePostInfoBloc
         yield const LoadingUpdatePostInfoState();
         switch (event.postOperationType) {
           case PostOperationType.like:
-            await UpdatePostInfoRepo().updatePostLike(event.postId);
+            await UpdatePostInfoRepo().updatePostLike(
+              postId: event.postId,
+              postOwnerId: event.postOwnerId,
+            );
             break;
           case PostOperationType.comment:
             // TODO: Handle this case.

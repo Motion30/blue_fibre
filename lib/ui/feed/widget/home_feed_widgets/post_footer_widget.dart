@@ -22,11 +22,13 @@ class PostFooterWidget extends StatelessWidget {
                 icon: Icons.favorite_border_outlined,
                 postOperationType: PostOperationType.like,
                 postId: post.id,
+                postOwnerId: post.ownerId,
               ),
               PostIconWidget(
                 icon: Icons.mode_comment_outlined,
                 postId: post.id,
                 postOperationType: PostOperationType.comment,
+                postOwnerId: post.ownerId,
               ),
               const Spacer(),
               PostIconWidget(

@@ -19,9 +19,12 @@ class AppRouter {
         );
         break;
       case '/commentPage':
-        if(arguments is String) {
+        if (arguments is List<String>) {
           return MaterialPageRoute<Widget>(
-            builder: (BuildContext context) => CommentPage(postId: arguments),
+            builder: (BuildContext context) => CommentPage(
+              postId: arguments[0],
+              postOwnerId: arguments[1],
+            ),
           );
         }
         break;

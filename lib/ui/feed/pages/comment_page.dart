@@ -3,9 +3,10 @@ import 'package:blue_fibre/ui/feed/widget/comment_widget/comment_textfield_widge
 import 'package:flutter/material.dart';
 
 class CommentPage extends StatelessWidget {
-  const CommentPage({@required this.postId});
+  const CommentPage({@required this.postId,@required this.postOwnerId});
 
   final String postId;
+  final String postOwnerId;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class CommentPage extends StatelessWidget {
             const Divider(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: CommentPageTextField(postId: postId),
+              child: CommentPageTextField(postId: postId, postOwnerId: postOwnerId,),
             ),
           ],
         ),
