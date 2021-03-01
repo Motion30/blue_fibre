@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:blue_fibre/business_logic/auth/model/login_user_model.dart';
 import 'package:blue_fibre/business_logic/auth/model/user_details_model.dart';
+import 'package:blue_fibre/business_logic/cloud_messaging/init_notification_class.dart';
 import 'package:blue_fibre/utils/firestore_document_value.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,6 +51,7 @@ class AuthenticationRepo {
       final User user = result.user;
       debugPrint(user.uid);
       await getUserDetails(uid: user.uid);
+      await _getIt.get<NotificationClass>().subscribeToChannel(user.uid);
 
       return userFromFirebase(user);
     } on SocketException {
@@ -63,7 +65,7 @@ class AuthenticationRepo {
     }
   }
 
-  Future registerUserWithEmailAndPassword({
+  Future<void> registerUserWithEmailAndPassword({
     @required String email,
     @required String password,
     @required String fullName,
@@ -93,6 +95,8 @@ class AuthenticationRepo {
         );
 
         await writeUserDataToDataBase(userData: userData);
+        await _getIt.get<NotificationClass>().subscribeToChannel(user.uid);
+
         // await HiveMethods().saveUserDataToLocalDb(userData: userData.toMap());
 
         return userFromFirebase(user);
@@ -173,7 +177,8 @@ class AuthenticationRepo {
     return userNameExist;
   }
 
-  Future<void> writeUserDataToDataBase({@required PostOwnerDetails userData}) async {
+  Future<void> writeUserDataToDataBase(
+      {@required PostOwnerDetails userData}) async {
     final DocumentReference userRef = _userCollectionRef.doc(userData.uid);
 
     await userRef.set(userData.toMap());
