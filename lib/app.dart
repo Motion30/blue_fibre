@@ -11,20 +11,20 @@ class BlueFiberApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: blocList(),
-        child: StreamProvider<LoginUserModel>.value(
-          value: AuthenticationRepo().userStream,
-          child: MaterialApp(
-            title: 'Blue Fiber',
-            theme: ThemeData(
-              backgroundColor: Colors.white,
-              scaffoldBackgroundColor: Colors.white,
-              primarySwatch: Colors.blue,
-              accentColor: Colors.green,
-            ),
-            onGenerateRoute: AppRouter.generateRoute,
-            initialRoute: '/',
+      providers: blocList(),
+      child: StreamProvider<LoginUserModel>.value(
+        value: AuthenticationRepo().userStream,
+        child: MaterialApp(
+          title: 'Blue Fiber',
+          theme: ThemeData(
+            backgroundColor: Colors.white,
+            scaffoldBackgroundColor: Colors.white,
+            primaryColor: const Color.fromRGBO(0, 125, 239, 1),
           ),
-        ));
+          onGenerateRoute: AppRouter.generateRoute,
+          initialRoute: '/',
+        ),
+      ),
+    );
   }
 }

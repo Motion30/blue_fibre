@@ -10,7 +10,6 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
         body: body(context),
       ),
     );
@@ -25,10 +24,6 @@ class SignUpPage extends StatelessWidget {
           SignUpPageMessage(size: size),
           SignUpPageForm(size: size),
           SignUpPageMoreOptions(size: size, navigate: () => callBack()),
-          SizedBox(
-            height: size.height * 0.10,
-            child: Container(color: Colors.white),
-          ),
         ],
       ),
     );

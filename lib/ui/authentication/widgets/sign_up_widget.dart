@@ -13,13 +13,11 @@ class SignUpPageMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size.width,
-      height: size.height * 0.25,
-      padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: const CustomText(
-        text: 'Hello\nSign-Up To\nGet Started',
+        text: 'Sign Up Now',
         size: 35.0,
-        fontWeight: FontWeight.w300,
-        color: Colors.white,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -89,19 +87,12 @@ class _SignUpPageFormState extends State<SignUpPageForm> {
     return Container(
       width: widget.size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15.0),
-          topRight: Radius.circular(15.0),
-        ),
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Form(
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const SizedBox(height: 30.0),
             CustomTextField(
               controller: fullNameController,
               title: 'Full Name',
@@ -162,19 +153,23 @@ class SignUpPageMoreOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       width: size.width,
-      height: size.height * 0.05,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const CustomText(
+            text: 'Already A Member?',
+            size: 16,
+            fontWeight: FontWeight.w300,
+          ),
           InkWell(
             onTap: () => navigate(),
             child: const CustomText(
-              text: 'Already Have An account? Sign In',
+              text: ' Login',
               size: 16,
               fontWeight: FontWeight.w300,
+              color: Colors.blue,
             ),
           ),
         ],

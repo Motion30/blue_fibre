@@ -10,7 +10,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: body(context),
       ),
     );
@@ -25,10 +25,6 @@ class LoginPage extends StatelessWidget {
           LoginPageMessage(size: size),
           LoginPageForm(size: size),
           LoginPageMoreOptions(size: size, navigate: () => callBack()),
-          SizedBox(
-            height: size.height * 0.305,
-            child: Container(color: Colors.white),
-          ),
         ],
       ),
     );

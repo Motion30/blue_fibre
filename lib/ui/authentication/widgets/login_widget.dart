@@ -11,16 +11,24 @@ class LoginPageMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width,
-      height: size.height * 0.30,
-      padding: const EdgeInsets.only(left: 10.0, top: 20.0),
-      child: const CustomText(
-        text: 'Hello Again!\nWelcome\nBack',
-        size: 35.0,
-        fontWeight: FontWeight.w300,
-        color: Colors.white,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: const Icon(Icons.arrow_back_ios),
+        ),
+        Container(
+          width: size.width,
+          height: size.height * 0.10,
+          padding: const EdgeInsets.only(left: 30.0, top: 20.0),
+          child: const CustomText(
+            text: 'Sign In',
+            size: 35.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -61,9 +69,9 @@ class _LoginPageFormState extends State<LoginPageForm> {
       } catch (e) {
         debugPrint(e.toString());
         CustomWarningDialog.showCustomDialog(
-            context: context,
-            title: 'Warning',
-            message: e.toString(),
+          context: context,
+          title: 'Warning',
+          message: e.toString(),
         );
       }
 
@@ -75,18 +83,12 @@ class _LoginPageFormState extends State<LoginPageForm> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15.0),
-          topRight: Radius.circular(15.0),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
       child: Form(
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 30.0),
             CustomTextField(
@@ -99,6 +101,15 @@ class _LoginPageFormState extends State<LoginPageForm> {
               title: 'Password',
               hideText: true,
             ),
+            const SizedBox(height: 5.0),
+            InkWell(
+              onTap: () {},
+              child: const CustomText(
+                text: 'Forgot password?',
+                size: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
             const SizedBox(height: 15.0),
             ValueListenableBuilder<bool>(
               valueListenable: isLoading,
@@ -108,7 +119,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
                 } else {
                   return CustomButton(
                     size: MediaQuery.of(context).size,
-                    title: 'Sign In',
+                    title: 'Login',
                     onPress: () => validate(),
                   );
                 }
@@ -131,26 +142,23 @@ class LoginPageMoreOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       width: size.width,
-      height: size.height * 0.05,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          InkWell(
-            onTap: () {},
-            child: const CustomText(
-              text: 'Forgot Your password?',
-              size: 16,
-              fontWeight: FontWeight.w300,
-            ),
+          const CustomText(
+            text: 'New on Blue fibre?',
+            size: 16,
+            fontWeight: FontWeight.w300,
           ),
           InkWell(
             onTap: () => navigate(),
-            child: const CustomText(
-              text: 'SignUp',
+            child: CustomText(
+              text: ' Sign Up',
               size: 16,
               fontWeight: FontWeight.w300,
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ],
