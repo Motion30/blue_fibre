@@ -16,6 +16,8 @@ class PostFooterWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          PostFooterDetails(post: post),
+          const SizedBox(height: 8.0),
           Row(
             children: <Widget>[
               PostIconWidget(
@@ -38,8 +40,8 @@ class PostFooterWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 5.0),
-          PostFooterDetails(post: post),
+
+
         ],
       ),
     );

@@ -1,10 +1,8 @@
 /** @format */
 
 const { v1: uuidv1 } = require("uuid");
-const { admin } = require("..");
-const db_likes = admin.firestore();
 
-async function likeMonitor(snap) {
+async function likeMonitor(admin_sdk, snap) {
   const id = uuidv1();
   const data = snap.data();
 
@@ -20,61 +18,94 @@ async function likeMonitor(snap) {
     type: "likes",
   };
 
-  await setNotificationData(postOwnerId, id, notificationData);
-  return setNotificationData(postOwnerId);
+  await setNotificationData(admin_sdk, postOwnerId, id, notificationData);
+  return sendNotificationToUser(
+    admin_sdk,
+    postOwnerId,
+    likerUid,
+    data.postLikedId
+  );
 }
 
-async function setNotificationData(postOwnerId, id, notificationData) {
-  await db_likes
+async function setNotificationData(
+  admin_sdk,
+  postOwnerId,
+  id,
+  notificationData
+) {
+  await admin_sdk
+    .firestore()
     .doc(`userData/${postOwnerId}/notification/${id}`)
     .set(notificationData)
     .then((value) => {
-      console.info("monitorLikesFunction function executed succesfully");
+      console.info(
+        "save liker data to post owner colloection function executed succesfully"
+      );
       console.log(`like added to post owner notification`);
-      return { msg: "function executed succesfully" };
+      return {
+        msg:
+          "save liker data to post owner colloection function executed succesfully",
+      };
     })
     .catch((err) => {
-      console.info("error in monitorLikesFunction execution");
+      console.info(
+        "error in save liker data to post owner colloection function"
+      );
       console.log(err);
-      return { msg: "error in execution" };
+      return {
+        msg: "error in save liker data to post owner colloection function",
+      };
     });
 }
 
-async function getLikerDetails(likerId) {
-  const snapshot = await db_likes.firestore
+async function getLikerDetails(admin_sdk, likerId) {
+  const snapshot = await admin_sdk
+    .firestore()
     .doc(`userData/${likerId}`)
     .get()
     .then((value) => {
       console.info("function executed succesfully: got liker user name");
-      return { msg: "function executed succesfully" };
+      console.log(value);
+      return value;
     })
     .catch((error) => {
       console.info("error in execution: unable to get liker name");
       console.log(error);
-      return { msg: "error in execution" };
+      return { msg: "error in execution: unable to get liker name" };
     });
 
-  return snapshot.fullName;
+  return snapshot.data().fullName;
 }
 
-async function sendNotificationToUser(postOwnerId) {
-  const userName = await getLikerDetails(likerId);
+async function sendNotificationToUser(
+  admin_sdk,
+  postOwnerId,
+  likerId,
+  postLikedId
+) {
+  const userName = await getLikerDetails(admin_sdk, likerId);
 
   const payload = {
     notification: {
-      title: "The title of the notification",
-      body: data["your_param_sent_from_the_client"],
+      title: "You got a new like!",
+      body: `${userName} Liked your post`,
     },
     data: {
       data_to_send: "msg_from_the_cloud",
       click_action: "FLUTTER_NOTIFICATION_CLICK",
+      type: "likes",
+      postLikedId: postLikedId,
     },
-    priority: "high",
   };
 
-  admin
+  const options = {
+    priority: "high",
+    timeToLive: 60 * 60 * 24,
+  };
+
+  return admin_sdk
     .messaging()
-    .sendToTopic(`${postOwnerId}`, payload)
+    .sendToTopic(`${postOwnerId}`, payload, options)
     .then((value) => {
       console.info("function executed succesfully: sent notification");
       return { msg: "function executed succesfully" };
@@ -82,7 +113,7 @@ async function sendNotificationToUser(postOwnerId) {
     .catch((error) => {
       console.info("error in execution: notification not sent");
       console.log(error);
-      return { msg: "error in execution" };
+      return { msg: "error in execution: notification not sent" };
     });
 }
 

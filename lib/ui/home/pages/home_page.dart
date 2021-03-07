@@ -2,6 +2,7 @@ import 'package:blue_fibre/ui/chat/pages/chat_page.dart';
 import 'package:blue_fibre/ui/feed/pages/home_feed_page.dart';
 import 'package:blue_fibre/ui/notification/pages/notification_page.dart';
 import 'package:blue_fibre/ui/profile/pages/profile_page.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -29,35 +30,24 @@ class HomePage extends StatelessWidget {
         bottomNavigationBar: ValueListenableBuilder<int>(
           valueListenable: currentPageIndex,
           builder: (_, int value, Widget child) {
-            return BottomNavigationBar(
+            return FloatingNavbar(
+              backgroundColor: Colors.white,
+              selectedItemColor: Theme.of(context).primaryColor,
+              unselectedItemColor: Colors.grey,
+              onTap: (int val) => currentPageIndex.value = val,
               currentIndex: value,
-              onTap: (int index) => currentPageIndex.value = index,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined, color: Colors.grey),
-                  label: 'Home',
+              items: <FloatingNavbarItem>[
+                FloatingNavbarItem(
+                  icon: Icons.home,
+                  title: 'Home',
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.chat_bubble_outline_outlined,
-                    color: Colors.grey,
-                  ),
-                  label: 'Messages',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.notifications_none_outlined,
-                    color: Colors.grey,
-                  ),
-                  label: 'Notification',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person_outline_rounded,
-                    color: Colors.grey,
-                  ),
-                  label: 'Profile',
-                ),
+                FloatingNavbarItem(
+                    icon: Icons.chat_bubble_outline, title: 'Chats'),
+                FloatingNavbarItem(
+                    icon: Icons.notifications_none_outlined,
+                    title: 'Notification'),
+                FloatingNavbarItem(
+                    icon: Icons.person_outline_rounded, title: 'Profile'),
               ],
             );
           },

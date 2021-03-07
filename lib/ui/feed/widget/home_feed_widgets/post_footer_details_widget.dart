@@ -10,19 +10,17 @@ class PostFooterDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           CustomText(
-            text: '${post.likesCount} Likes and ${post.commentCount} Comments',
+            text: '${post.likesCount} Likes',
             fontWeight: FontWeight.w300,
           ),
-          const SizedBox(height: 3.0),
-          if (post.description != '') CustomText(
-                  text: post.description,
-                  fontWeight: FontWeight.w300,
-                ) else Container(),
+          CustomText(
+            text: '${post.commentCount} Comments',
+            fontWeight: FontWeight.w300,
+          ),
         ],
       ),
     );

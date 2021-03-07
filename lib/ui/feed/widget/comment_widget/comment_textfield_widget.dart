@@ -2,6 +2,7 @@ import 'package:blue_fibre/business_logic/feed/bloc/comment_bloc/comment_bloc.da
 import 'package:blue_fibre/ui/feed/widget/comment_widget/send_comment_button.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
 import 'package:blue_fibre/ui/shared_widgets/custom_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,6 +51,8 @@ class _CommentPageTextFieldState extends State<CommentPageTextField> {
                 controller: _textEditingController,
                 title: 'Add a comment....',
                 showUnderLine: false,
+                keyboardType: TextInputType.multiline,
+                maxLine: 20,
               ),
             ),
             SendCommentButton(

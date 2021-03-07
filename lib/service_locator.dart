@@ -8,6 +8,8 @@ import 'package:blue_fibre/utils/media_class.dart';
 import 'package:blue_fibre/utils/navigator_class.dart';
 import 'package:get_it/get_it.dart';
 
+import 'business_logic/cloud_messaging/init_notification_class.dart';
+
 final GetIt getIt = GetIt.instance;
 
 class ServiceLocator {
@@ -20,5 +22,6 @@ class ServiceLocator {
     getIt.registerLazySingleton<GetFeedRepo>(() => GetFeedRepo());
     getIt.registerLazySingleton<UpdatePostInfoRepo>(() => UpdatePostInfoRepo());
     getIt.registerLazySingleton<CommentRepo>(() => CommentRepo());
+    getIt.registerLazySingleton<NotificationClass>(() => NotificationClass());
   }
 }

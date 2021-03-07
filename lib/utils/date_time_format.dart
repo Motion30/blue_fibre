@@ -11,6 +11,14 @@ class DateTimeFormatter {
     return '$day, $month $year ${hour < 9 ? '0' : ''}$hour:$min';
   }
 
+  static String formatPostTime(Timestamp timestamp) {
+    final String month = getMonth(timestamp.toDate().month);
+    final int day = timestamp.toDate().day;
+    final int year = timestamp.toDate().year;
+
+    return '$day $month ${year == DateTime.now().year ? '' : year}';
+  }
+
   static String getMonth(int month) {
     switch (month) {
       case 1:
