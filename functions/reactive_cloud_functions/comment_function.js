@@ -19,6 +19,7 @@ async function commentMonitor(admin_sdk, snap) {
     commenterId: commenterId,
     postCommentId: data.postCommentId,
     type: "comment",
+    read: false,
   };
 
   // console.log(notificationData);
