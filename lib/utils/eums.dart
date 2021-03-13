@@ -5,8 +5,13 @@ enum ImageWidgetType {
   none,
 }
 
-enum PostOperationType{
+enum PostOperationType {
   like,
   comment,
   bookmark,
+}
+
+enum NotificationType {
+  likes,
+  comment,
 }

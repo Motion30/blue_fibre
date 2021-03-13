@@ -1,6 +1,7 @@
 /** @format */
 
 const { v1: uuidv1 } = require("uuid");
+const firebase = require("firebase");
 
 async function commentMonitor(admin_sdk, snap) {
   const id = uuidv1();
@@ -20,12 +21,12 @@ async function commentMonitor(admin_sdk, snap) {
     postCommentId: data.postCommentId,
     type: "comment",
     read: false,
+    comment: comment,
   };
 
-  // console.log(notificationData);
-  // console.log("lllllllllll");
-
   await setNotificationData(admin_sdk, postOwnerId, id, notificationData);
+
+  // await incrementNotificationCount(admin_sdk, postOwnerId);
 
   return sendNotificationToUser(
     admin_sdk,
@@ -63,6 +64,32 @@ async function setNotificationData(
       console.log(err);
       return {
         msg: "error in save commenter data to post owner colloection function",
+      };
+    });
+}
+
+async function incrementNotificationCount(admin_sdk, postOwnerId) {
+  await admin_sdk
+    .firestore()
+    .doc(`userData/${postOwnerId}`)
+    .set(
+      { notificationCount: firebase.firestore.FieldValue.increment(1) },
+      { merge: true }
+    )
+    .then((value) => {
+      console.info(
+        "increment notification count function executed succesfully"
+      );
+      console.log(`increment notification count to post owner notification`);
+      return {
+        msg: "increment notification count function executed succesfully",
+      };
+    })
+    .catch((err) => {
+      console.info("error in increment notification count function");
+      console.log(err);
+      return {
+        msg: "error in increment notification count function",
       };
     });
 }

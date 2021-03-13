@@ -13,7 +13,7 @@ class AuthenticationRepo {
   final GetIt _getIt = GetIt.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _userCollectionRef =
-      FirebaseFirestore.instance.collection(firestoreUserData);
+  FirebaseFirestore.instance.collection(firestoreUserData);
 
   LoginUserModel userFromFirebase(User user) {
     return user != null ? LoginUserModel(uid: user.uid) : null;
@@ -33,7 +33,7 @@ class AuthenticationRepo {
 
   Future<Map<String, dynamic>> getLoginUserDetails() async {
     final DocumentSnapshot documentSnapshot =
-        await _userCollectionRef.doc(getUserUid()).get();
+    await _userCollectionRef.doc(getUserUid()).get();
 
     return documentSnapshot.data();
   }
@@ -77,7 +77,7 @@ class AuthenticationRepo {
 
       if (userNameExist == false) {
         final UserCredential result =
-            await _auth.createUserWithEmailAndPassword(
+        await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -137,6 +137,12 @@ class AuthenticationRepo {
     }
 
     return user;
+  }
+
+  Future<Map<String, dynamic>> getUserDetailsMap(String uid) async {
+    final DocumentSnapshot document = await _userCollectionRef.doc(uid).get();
+
+    return document.data();
   }
 
   Future<void> resetEmail({@required String email}) async {

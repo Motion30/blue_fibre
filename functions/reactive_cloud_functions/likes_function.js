@@ -1,6 +1,7 @@
 /** @format */
 
 const { v1: uuidv1 } = require("uuid");
+const firebase = require("firebase");
 
 async function likeMonitor(admin_sdk, snap) {
   const id = uuidv1();
@@ -20,6 +21,7 @@ async function likeMonitor(admin_sdk, snap) {
   };
 
   await setNotificationData(admin_sdk, postOwnerId, id, notificationData);
+  // await incrementNotificationCount(admin_sdk, postOwnerId);
   return sendNotificationToUser(
     admin_sdk,
     postOwnerId,
@@ -40,21 +42,41 @@ async function setNotificationData(
     .set(notificationData)
     .then((value) => {
       console.info(
-        "save liker data to post owner colloection function executed succesfully"
+        "increment notification count function executed succesfully"
       );
       console.log(`like added to post owner notification`);
       return {
-        msg:
-          "save liker data to post owner colloection function executed succesfully",
+        msg: "increment notification count function executed succesfully",
       };
     })
     .catch((err) => {
-      console.info(
-        "error in save liker data to post owner colloection function"
-      );
+      console.info("error in increment notification count function");
       console.log(err);
       return {
-        msg: "error in save liker data to post owner colloection function",
+        msg: "error in increment notification count function",
+      };
+    });
+}
+
+async function incrementNotificationCount(admin_sdk, postOwnerId) {
+  await admin_sdk
+    .firestore()
+    .doc(`userData/${postOwnerId}`)
+    .update({ notificationCount: firebase.firestore.FieldValue.increment(1) })
+    .then((value) => {
+      console.info(
+        "increment notification count function executed succesfully"
+      );
+      console.log(`increment notification count to post owner notification`);
+      return {
+        msg: "increment notification count function executed succesfully",
+      };
+    })
+    .catch((err) => {
+      console.info("error in increment notification count function");
+      console.log(err);
+      return {
+        msg: "error in increment notification count function",
       };
     });
 }
