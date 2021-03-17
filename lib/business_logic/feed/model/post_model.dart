@@ -9,19 +9,21 @@ class PostModel {
     @required this.imageUrl,
     @required this.postOwnerDetails,
     @required this.ownerId,
+    this.isLiked,
     this.likesCount = 0,
     this.commentCount = 0,
     this.timestamp,
     @required this.id,
   });
 
-  factory PostModel.fromMap(Map<String, dynamic> map) {
+  factory PostModel.fromMap(Map<String, dynamic> map, {bool isLiked}) {
     return PostModel(
       id: map['id'] as String,
       description: map['description'] as String,
       imageUrl: List<String>.from(map['imageUrl'] as List<dynamic>),
       likesCount: map['likesCount'] as int,
       commentCount: map['commentCount'] as int,
+      isLiked: isLiked,
       timestamp: map['timestamp'] as Timestamp,
       ownerId: map['ownerId'] as String,
       postOwnerDetails: PostOwnerDetailsModel.fromMap(
@@ -33,6 +35,7 @@ class PostModel {
   final String description;
   final List<String> imageUrl;
   final int likesCount;
+  final bool isLiked;
   final int commentCount;
   final Timestamp timestamp;
   final PostOwnerDetailsModel postOwnerDetails;

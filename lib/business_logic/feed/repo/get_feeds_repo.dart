@@ -1,85 +1,66 @@
 import 'dart:async';
 
 import 'package:blue_fibre/business_logic/feed/model/post_model.dart';
-import 'package:blue_fibre/ui/shared_widgets/custom_constant_widget.dart';
+import 'package:blue_fibre/business_logic/feed/repo/update_post_details_repo.dart';
 import 'package:blue_fibre/utils/firestore_document_value.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class GetFeedRepo {
-  static const int _perPage = 5;
+  static const int perPage = 5;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final CollectionReference _postCollectionRef =
       _firestore.collection(firebaseFeedCollectionRefName);
 
-  final StreamController<List<PostModel>> allRequestedFeed =
-      StreamController<List<PostModel>>.broadcast();
-  final List<List<PostModel>> _allPagesList = <List<PostModel>>[];
+  // final StreamController<List<PostModel>> allRequestedFeed =
+  // StreamController<List<PostModel>>.broadcast();
+  // final List<List<PostModel>> _allPagesList = <List<PostModel>>[];
 
   DocumentSnapshot _lastDoc;
-  bool hasMore = true;
-  bool isFetching = false;
+  bool _hasMore = true;
 
-  Future<void> getPost(BuildContext context) async {
-    _fetchPost(context);
-    await Future.delayed(const Duration(seconds: 3));
-  }
+  Future<List<PostModel>> fetchPost({bool reload = false}) async {
+    final List<PostModel> post = <PostModel>[];
 
-  void _fetchPost(BuildContext context) {
+    if(_hasMore == false && reload == false) {
+      return post;
+    }
+
     Query _postQuery = _postCollectionRef
         .orderBy('timestamp', descending: true)
-        .limit(_perPage);
+        .limit(perPage);
 
-    if (_lastDoc != null) {
+
+    if (_lastDoc != null && reload == false) {
       _postQuery = _postQuery.startAfterDocument(_lastDoc);
     }
 
-    if (!hasMore) return;
+    final QuerySnapshot querySnapshot = await _postQuery.get();
 
-    isFetching = true;
+    if(querySnapshot.docs.isNotEmpty) {
+      _lastDoc = querySnapshot.docs.last;
+    }
 
-    final int _currentPageIndex = _allPagesList.length;
+    for (int i = 0; i < querySnapshot.docs.length - 1; i++) {
+      final QueryDocumentSnapshot queryDocumentSnapshot = querySnapshot.docs[i];
 
-    try {
-      _postQuery.snapshots().listen((QuerySnapshot querySnapshot) {
-        final List<PostModel> _currentPageList = querySnapshot.docs
-            .map((QueryDocumentSnapshot queryDocumentSnapshot) =>
-                PostModel.fromMap(queryDocumentSnapshot.data()))
-            .toList();
+      final bool _isLiked = await GetIt.instance
+          .get<UpdatePostInfoRepo>()
+          .checkIfLikedAlready(queryDocumentSnapshot.id);
 
-        debugPrint('list: $_currentPageList');
-
-        if (_currentPageIndex < _allPagesList.length - 1) {
-          _allPagesList[_currentPageIndex] = _currentPageList;
-        } else {
-          _allPagesList.add(_currentPageList);
-        }
-
-        if (_currentPageIndex == _allPagesList.length - 1 &&
-            _currentPageList.isNotEmpty) {
-          _lastDoc = querySnapshot.docs.last;
-        }
-
-        hasMore = _currentPageList.length == _perPage;
-
-        final List<PostModel> allPost = _allPagesList.fold(
-            <PostModel>[],
-            (List<PostModel> previousValue, List<PostModel> element) =>
-                previousValue..addAll(element));
-
-        allRequestedFeed.add(allPost);
-      });
-    } catch (e) {
-      CustomWarningDialog.showCustomDialog(
-        title: 'Error',
-        message: e?.message.toString(),
-        context: context,
+      post.add(
+        PostModel.fromMap(queryDocumentSnapshot.data(), isLiked: _isLiked),
       );
     }
 
-    isFetching = false;
+    _hasMore = post.length == perPage - 1;
+    print(post.length);
+    print(_hasMore);
+    return post;
   }
 
-
+  Stream<DocumentSnapshot> likeAndCommentStream(String docId) async* {
+    yield* _postCollectionRef.doc(docId).snapshots();
+  }
 }

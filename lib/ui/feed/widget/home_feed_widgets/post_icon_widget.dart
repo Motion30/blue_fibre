@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostIconWidget extends StatelessWidget {
-  const PostIconWidget({
+  PostIconWidget({
     @required this.icon,
     this.postId,
     this.postOwnerId,
     this.postOperationType,
+    this.isLiked = false,
   });
 
   final PostOperationType postOperationType;
-  final IconData icon;
+  IconData icon;
   final String postId;
   final String postOwnerId;
+  bool isLiked;
+  // final bool showLiked;
 
   void action(BuildContext context) {
     switch (postOperationType) {
@@ -25,6 +28,14 @@ class PostIconWidget extends StatelessWidget {
               postId: postId,
               // postOperationType, postId,
             ));
+
+        if(isLiked){
+          isLiked = false;
+          icon = Icons.favorite_border_outlined;
+        }else{
+          isLiked = true;
+          icon = Icons.favorite;
+        }
         break;
       case PostOperationType.comment:
         Navigator.of(context).pushNamed(
@@ -58,7 +69,7 @@ class PostIconWidget extends StatelessWidget {
 
           return InkWell(
             onTap: () => action(context),
-            child: Icon(icon, color: Colors.grey[700]),
+            child: Icon(icon, color: isLiked ? Colors.red : Colors.grey[700]),
           );
         },
       ),

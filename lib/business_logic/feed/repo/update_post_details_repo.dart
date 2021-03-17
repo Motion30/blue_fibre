@@ -7,23 +7,29 @@ import 'package:get_it/get_it.dart';
 class UpdatePostInfoRepo {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final CollectionReference _feedCollectionRef =
-      _firestore.collection(firebaseFeedCollectionRefName);
+  _firestore.collection(firebaseFeedCollectionRefName);
   static final CollectionReference _likesCollectionRef =
-      _firestore.collection(firebaseLikesCollectionRefName);
+  _firestore.collection(firebaseLikesCollectionRefName);
 
-  Future<bool> _checkIfLikedAlready(String postId) async {
+  Future<bool> checkIfLikedAlready(String postId) async {
     bool alreadyLiked;
     final QuerySnapshot querySnapshot = await _likesCollectionRef
         .where('postLikedId', isEqualTo: postId)
         .where('likerId',
-            isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
+        isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
         .get();
 
-    if (querySnapshot.docs.isEmpty) {
+
+    final LikesModel like = LikesModel.fromMap(
+        querySnapshot.docs?.first?.data());
+
+
+    if (querySnapshot.docs.isEmpty || like.liked == false) {
       alreadyLiked = false;
     } else {
       alreadyLiked = true;
     }
+
 
     return alreadyLiked;
   }
@@ -66,7 +72,7 @@ class UpdatePostInfoRepo {
     String postId,
     String postOwnerId,
   }) async {
-    if (await _checkIfLikedAlready(postId) == false) {
+    if (await checkIfLikedAlready(postId) == false) {
       await likePost(postId, postOwnerId);
     } else {
       await _disLikePost(postId);
@@ -79,26 +85,27 @@ class UpdatePostInfoRepo {
     final QuerySnapshot querySnapshot = await _likesCollectionRef
         .where('postLikedId', isEqualTo: postId)
         .where('likerId',
-            isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
+        isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
+    // .where('liked', isEqualTo: true)
         .get();
 
     final DocumentSnapshot documentSnapshot = querySnapshot.docs?.first;
-    final LikesModel like = LikesModel.fromMap(documentSnapshot.data());
+    // final LikesModel like = LikesModel.fromMap(documentSnapshot.data());
 
-    if (like.liked == true) {
-      _writeBatch.update(
-        _likesCollectionRef.doc(documentSnapshot.id),
-        <String, dynamic>{'liked': false},
-      );
+    // if (like.liked == true) {
+    _writeBatch.update(
+      _likesCollectionRef.doc(documentSnapshot.id),
+      <String, dynamic>{'liked': false},
+    );
 
-      _writeBatch.update(
-        _feedCollectionRef.doc(postId),
-        <String, dynamic>{'likesCount': FieldValue.increment(-1)},
-      );
+    _writeBatch.update(
+      _feedCollectionRef.doc(postId),
+      <String, dynamic>{'likesCount': FieldValue.increment(-1)},
+    );
 
-      await _writeBatch.commit();
-    } else {
-      await likePost(postId, documentSnapshot.id);
-    }
+    await _writeBatch.commit();
+    // } else {
+    //   await likePost(postId, documentSnapshot.id);
+    // }
   }
 }

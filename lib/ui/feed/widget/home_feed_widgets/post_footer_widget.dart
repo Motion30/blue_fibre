@@ -21,10 +21,11 @@ class PostFooterWidget extends StatelessWidget {
           Row(
             children: <Widget>[
               PostIconWidget(
-                icon: Icons.favorite_border_outlined,
+                icon: post.isLiked ? Icons.favorite : Icons.favorite_border_outlined,
                 postOperationType: PostOperationType.like,
                 postId: post.id,
                 postOwnerId: post.ownerId,
+                isLiked: post.isLiked,
               ),
               PostIconWidget(
                 icon: Icons.mode_comment_outlined,

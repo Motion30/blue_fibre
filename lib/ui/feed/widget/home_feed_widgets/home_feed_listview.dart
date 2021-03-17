@@ -1,14 +1,14 @@
+import 'package:blue_fibre/business_logic/feed/bloc/get_post_bloc/get_feed_bloc.dart';
 import 'package:blue_fibre/business_logic/feed/model/post_model.dart';
-import 'package:blue_fibre/business_logic/feed/repo/get_feeds_repo.dart';
 import 'package:blue_fibre/ui/feed/widget/home_feed_widgets/feed_details_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeFeedListView extends StatefulWidget {
-  const HomeFeedListView({this.posts, this.callBack});
+  const HomeFeedListView({this.posts, this.loading});
 
   final List<PostModel> posts;
-  final Function callBack;
+  final bool loading;
 
   @override
   _HomeFeedListViewState createState() => _HomeFeedListViewState();
@@ -16,15 +16,14 @@ class HomeFeedListView extends StatefulWidget {
 
 class _HomeFeedListViewState extends State<HomeFeedListView> {
   ScrollController _controller;
-  final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
   Future<void> _scrollController() async {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
-        GetIt.instance.get<GetFeedRepo>().isFetching == false) {
-      loading.value = true;
-      await widget.callBack();
-      loading.value = false;
+        BlocProvider.of<GetFeedBloc>(context).isFetching == false &&
+        BlocProvider.of<GetFeedBloc>(context).hasMore == true) {
+      print('end');
+      BlocProvider.of<GetFeedBloc>(context).add(const FetchPostEvent());
     }
   }
 
@@ -38,7 +37,10 @@ class _HomeFeedListViewState extends State<HomeFeedListView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await widget.callBack();
+        final GetFeedBloc bloc = BlocProvider.of<GetFeedBloc>(context);
+        await Future.delayed(const Duration(seconds: 1));
+
+        bloc.add(const FetchPostEvent(reload: true));
       },
       child: ListView.separated(
         controller: _controller,
@@ -47,9 +49,9 @@ class _HomeFeedListViewState extends State<HomeFeedListView> {
         itemCount: widget.posts.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
-            children: [
+            children: <Widget>[
               FeedDetailsWidget(post: widget.posts[index]),
-              if (index == widget.posts.length - 1)
+              if (index == widget.posts.length - 1 && widget.loading == true)
                 const CircularProgressIndicator()
               else
                 Container(),
