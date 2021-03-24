@@ -5,8 +5,14 @@ import 'package:blue_fibre/ui/profile/pages/profile_page.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final ValueNotifier<int> currentPageIndex = ValueNotifier<int>(0);
+
   final List<Widget> screenList = <Widget>[
     const FeedHomePage(),
     const ChatPage(),

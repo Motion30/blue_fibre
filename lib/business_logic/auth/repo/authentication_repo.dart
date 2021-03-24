@@ -90,6 +90,7 @@ class AuthenticationRepo {
           fullName: fullName,
           phoneNumber: phoneNumber,
           profilePicUrl: null,
+          backgroundPic: null,
           timestamp: Timestamp.now(),
           userName: userName,
         );

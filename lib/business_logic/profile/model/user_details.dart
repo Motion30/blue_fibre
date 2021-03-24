@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PostOwnerDetails {
-  PostOwnerDetails({
+class UserDetailsModel {
+  UserDetailsModel({
     @required this.uid,
     @required this.email,
     @required this.fullName,
@@ -35,8 +35,8 @@ class PostOwnerDetails {
   }
 
   // ignore: sort_constructors_first
-  factory PostOwnerDetails.fromMap(Map<String, dynamic> map) {
-    return PostOwnerDetails(
+  factory UserDetailsModel.fromMap(Map<String, dynamic> map) {
+    return UserDetailsModel(
       uid: map['uid'] as String,
       email: map['email'] as String,
       fullName: map['fullName'] as String,
@@ -48,7 +48,7 @@ class PostOwnerDetails {
     );
   }
 
-  PostOwnerDetails copyWith({
+  UserDetailsModel copyWith({
     String uid,
     String email,
     String fullName,
@@ -57,7 +57,7 @@ class PostOwnerDetails {
     String profilePicUrl,
     Timestamp timestamp,
   }) {
-    return PostOwnerDetails(
+    return UserDetailsModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       fullName: fullName ?? this.fullName,

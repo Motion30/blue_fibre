@@ -7,6 +7,8 @@ import 'package:blue_fibre/business_logic/notification/bloc/get_notification/get
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'business_logic/profile/bloc/get_profile_details/get_profile_details_bloc.dart';
+
 List<BlocProvider<Cubit<Object>>> blocList() {
   return <BlocProvider<Cubit<Object>>>[
     BlocProvider<UploadFeedBloc>(
@@ -25,6 +27,9 @@ List<BlocProvider<Cubit<Object>>> blocList() {
     BlocProvider<GetNotificationsBloc>(
       create: (BuildContext context) =>
           GetNotificationsBloc()..add(const FetchNotificationEvent(null)),
+    ),
+    BlocProvider<GetProfileDetailsBloc>(
+      create: (BuildContext context) => GetProfileDetailsBloc()..add(const GetUserProfileEvent()),
     ),
   ];
 }
