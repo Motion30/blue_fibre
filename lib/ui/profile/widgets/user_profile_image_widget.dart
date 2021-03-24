@@ -24,6 +24,23 @@ class UserProfileImageWidget extends StatelessWidget {
                   )
                 : Container(color: Colors.blue),
           ),
+          Positioned(
+            top: 4.0,
+            right: 5.0,
+            child: Container(
+              height: 35,
+              width: 35,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: InkWell(
+                onTap: () => Navigator.of(context).pushNamed('/settingsPage'),
+                child: Icon(Icons.settings, color: Colors.grey[800],),
+              ),
+            ),
+          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
             alignment: Alignment.bottomLeft,

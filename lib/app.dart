@@ -16,6 +16,7 @@ class BlueFiberApp extends StatelessWidget {
         value: AuthenticationRepo().userStream,
         child: MaterialApp(
           title: 'Blue Fiber',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             backgroundColor: Colors.white,
             scaffoldBackgroundColor: Colors.white,

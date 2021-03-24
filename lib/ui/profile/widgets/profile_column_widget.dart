@@ -6,14 +6,12 @@ class ProfileColumnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: ListView(
-        shrinkWrap: true,
-        children: const <Widget>[
-          UserProfileDetailsWidget(),
-        ],
-      ),
+    return ListView(
+      shrinkWrap: true,
+      children: const <Widget>[
+        UserProfileDetailsWidget(),
+        Divider(),
+      ],
     );
   }
 }
