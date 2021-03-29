@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 
 part 'get_feed_event.dart';
+
 part 'get_feed_state.dart';
 
 class GetFeedBloc extends Bloc<GetFeedEvent, GetFeedState> {
@@ -30,7 +31,10 @@ class GetFeedBloc extends Bloc<GetFeedEvent, GetFeedState> {
       try {
         yield LoadingGetFeedState();
 
-        final List<PostModel> post = await repo.fetchPost(reload: event.reload);
+        final List<PostModel> post = await repo.fetchPost(
+          reload: event.reload,
+          personalPostOnly: event.personalPostOnly,
+        );
 
         hasMore = post.length == 5 - 1;
 

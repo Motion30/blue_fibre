@@ -7,6 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../business_logic/feed/model/post_model.dart';
 
 class FeedHomePageBodyWidget extends StatefulWidget {
+  const FeedHomePageBodyWidget({this.personalPostOnly = false});
+
+  final bool personalPostOnly;
+
   @override
   _FeedHomePageBodyWidgetState createState() => _FeedHomePageBodyWidgetState();
 }
@@ -18,7 +22,8 @@ class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GetFeedBloc>(context).add(FetchPostEvent());
+    BlocProvider.of<GetFeedBloc>(context).add(
+        FetchPostEvent(personalPostOnly: widget.personalPostOnly));
   }
 
   @override
@@ -33,10 +38,10 @@ class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget> {
               message: state.message,
               context: context,
             );
-          }else if (state is LoadedGetFeedState) {
-            if(state.reloaded == true){
+          } else if (state is LoadedGetFeedState) {
+            if (state.reloaded == true) {
               _post = state.post;
-            }else {
+            } else {
               _post.addAll(state.post);
             }
             _loading = state.hasMore;
@@ -44,46 +49,17 @@ class _FeedHomePageBodyWidgetState extends State<FeedHomePageBodyWidget> {
         },
         builder: (BuildContext context, GetFeedState state) {
           if (state is LoadingGetFeedState &&
-              BlocProvider.of<GetFeedBloc>(context).loadedOnce == false) {
+              BlocProvider
+                  .of<GetFeedBloc>(context)
+                  .loadedOnce == false) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return HomeFeedListView(posts: _post, loading: _loading);
+          return HomeFeedListView(posts: _post,
+            loading: _loading,
+            personalPostOnly: widget.personalPostOnly,);
         },
       ),
     );
   }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Container(
-//     color: Colors.white,
-//     child: StreamBuilder<List<PostModel>>(
-//       stream: GetIt.instance.get<GetFeedRepo>().allRequestedFeed.stream,
-//       builder:
-//           (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
-//         debugPrint(snapshot.toString());
-//         if (!snapshot.hasData) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else if (snapshot.data.isEmpty) {
-//           return const Center(child: Text('No Post Found'));
-//         }
-//
-//         if (snapshot.hasError) {
-//           CustomWarningDialog.showCustomDialog(
-//             title: 'Error',
-//             message: snapshot.error.toString(),
-//             context: context,
-//           );
-//         }
-//
-//         return HomeFeedListView(
-//           posts: snapshot.data,
-//           callBack: () => GetIt.instance.get<GetFeedRepo>().getPost(context),
-//         );
-//       },
-//     ),
-//   );
-// }
-
 }

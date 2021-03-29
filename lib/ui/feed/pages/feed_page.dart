@@ -7,7 +7,7 @@ class FeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FeedHomePageBodyWidget(),
+      body: const FeedHomePageBodyWidget(),
       floatingActionButton: CustomFloatingActionButton(
         callBack: () => Navigator.of(context).pushNamed('/uploadFeedPage'),
         child: const Icon(Icons.add),

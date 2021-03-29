@@ -6,9 +6,11 @@ abstract class GetFeedEvent extends Equatable {
 
 class FetchPostEvent extends GetFeedEvent{
 
-  const FetchPostEvent({this.reload  = false});
+  const FetchPostEvent({this.reload  = false, this.personalPostOnly  = false});
 
   final bool reload;
+  final bool personalPostOnly;
+
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[reload, personalPostOnly];
 }

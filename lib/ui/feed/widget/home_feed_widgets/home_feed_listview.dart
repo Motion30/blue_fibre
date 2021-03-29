@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeFeedListView extends StatefulWidget {
-  const HomeFeedListView({this.posts, this.loading});
+  const HomeFeedListView({this.posts, this.loading, this.personalPostOnly = false,});
 
   final List<PostModel> posts;
   final bool loading;
+  final bool personalPostOnly;
 
   @override
   _HomeFeedListViewState createState() => _HomeFeedListViewState();
@@ -23,7 +24,7 @@ class _HomeFeedListViewState extends State<HomeFeedListView> {
         BlocProvider.of<GetFeedBloc>(context).isFetching == false &&
         BlocProvider.of<GetFeedBloc>(context).hasMore == true) {
       print('end');
-      BlocProvider.of<GetFeedBloc>(context).add(const FetchPostEvent());
+      BlocProvider.of<GetFeedBloc>(context).add(FetchPostEvent(personalPostOnly: widget.personalPostOnly));
     }
   }
 
@@ -40,9 +41,10 @@ class _HomeFeedListViewState extends State<HomeFeedListView> {
         final GetFeedBloc bloc = BlocProvider.of<GetFeedBloc>(context);
         await Future.delayed(const Duration(seconds: 1));
 
-        bloc.add(const FetchPostEvent(reload: true));
+        bloc.add(FetchPostEvent(reload: true, personalPostOnly: widget.personalPostOnly,));
       },
       child: ListView.separated(
+        shrinkWrap: true,
         controller: _controller,
         padding: const EdgeInsets.only(top: 10.0),
         separatorBuilder: (_, int index) => const Divider(),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:blue_fibre/business_logic/auth/repo/authentication_repo.dart';
 import 'package:blue_fibre/business_logic/feed/model/post_model.dart';
 import 'package:blue_fibre/business_logic/feed/repo/update_post_details_repo.dart';
 import 'package:blue_fibre/utils/firestore_document_value.dart';
@@ -13,17 +14,16 @@ class GetFeedRepo {
   static final CollectionReference _postCollectionRef =
       _firestore.collection(firebaseFeedCollectionRefName);
 
-  // final StreamController<List<PostModel>> allRequestedFeed =
-  // StreamController<List<PostModel>>.broadcast();
-  // final List<List<PostModel>> _allPagesList = <List<PostModel>>[];
-
   DocumentSnapshot _lastDoc;
   bool _hasMore = true;
 
-  Future<List<PostModel>> fetchPost({bool reload = false}) async {
+  Future<List<PostModel>> fetchPost({
+    bool reload = false,
+    bool personalPostOnly = false,
+  }) async {
     final List<PostModel> post = <PostModel>[];
 
-    if(_hasMore == false && reload == false) {
+    if (_hasMore == false && reload == false) {
       return post;
     }
 
@@ -31,6 +31,12 @@ class GetFeedRepo {
         .orderBy('timestamp', descending: true)
         .limit(perPage);
 
+    if (personalPostOnly == true) {
+      _postQuery = _postQuery.where(
+        'ownerId',
+        isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid(),
+      );
+    }
 
     if (_lastDoc != null && reload == false) {
       _postQuery = _postQuery.startAfterDocument(_lastDoc);
@@ -38,7 +44,7 @@ class GetFeedRepo {
 
     final QuerySnapshot querySnapshot = await _postQuery.get();
 
-    if(querySnapshot.docs.isNotEmpty) {
+    if (querySnapshot.docs.isNotEmpty) {
       _lastDoc = querySnapshot.docs.last;
     }
 
