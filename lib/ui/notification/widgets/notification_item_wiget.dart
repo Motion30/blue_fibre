@@ -12,7 +12,6 @@ class NotificationItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(notification.type);
     if (notification.type == NotificationType.likes) {
       return LikesNotificationWidget(notification);
     } else if (notification.type == NotificationType.comment) {

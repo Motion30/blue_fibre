@@ -26,12 +26,14 @@ class PostFooterWidget extends StatelessWidget {
                 postId: post.id,
                 postOwnerId: post.ownerId,
                 isLiked: post.isLiked,
+                imageUrls: post.imageUrl,
               ),
               PostIconWidget(
                 icon: Icons.mode_comment_outlined,
                 postId: post.id,
                 postOperationType: PostOperationType.comment,
                 postOwnerId: post.ownerId,
+                imageUrls: post.imageUrl,
               ),
               const Spacer(),
               PostIconWidget(

@@ -22,6 +22,7 @@ async function commentMonitor(admin_sdk, snap) {
     type: "comment",
     read: false,
     comment: comment,
+    imageUrls: data.imageUrls,
   };
 
   await setNotificationData(admin_sdk, postOwnerId, id, notificationData);

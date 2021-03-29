@@ -7,6 +7,7 @@ class LikesModel {
     this.liked = true,
     @required this.postLikedId,
     @required this.postOwnerId,
+    @required this.imageUrls,
     this.timestamp,
   });
 
@@ -17,6 +18,7 @@ class LikesModel {
       postLikedId: map['postLikedId'] as String,
       postOwnerId: map['postOwnerId'] as String,
       timestamp: map['timestamp'] as Timestamp,
+      imageUrls: map['imageUrls'] as List<dynamic>,
     );
   }
 
@@ -24,6 +26,7 @@ class LikesModel {
   final bool liked;
   final String postLikedId;
   final String postOwnerId;
+  final List<dynamic> imageUrls;
   final Timestamp timestamp;
 
   Map<String, dynamic> toMap() {
@@ -32,6 +35,7 @@ class LikesModel {
       'liked': liked,
       'postLikedId': postLikedId,
       'postOwnerId': postOwnerId,
+      'imageUrls': imageUrls,
       'timestamp': Timestamp.now(),
     };
   }

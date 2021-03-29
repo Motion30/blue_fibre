@@ -5,12 +5,13 @@ abstract class CommentEvent extends Equatable {
 }
 
 class AddCommentEvent extends CommentEvent {
-  const AddCommentEvent({this.commentText, this.postId, this.postOwnerId});
+  const AddCommentEvent({this.commentText, this.postId, this.postOwnerId, this.imageUrls});
 
   final String commentText;
   final String postId;
   final String postOwnerId;
+  final List<String> imageUrls;
 
   @override
-  List<Object> get props => <Object>[commentText, postId, postOwnerId];
+  List<Object> get props => <Object>[commentText, postId, postOwnerId, imageUrls];
 }

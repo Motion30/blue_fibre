@@ -1,6 +1,7 @@
 import 'package:blue_fibre/ui/authentication/pages/wrapper.dart';
 import 'package:blue_fibre/ui/feed/pages/comment_page.dart';
 import 'package:blue_fibre/ui/feed/pages/upload_feed_page.dart';
+import 'package:blue_fibre/ui/notification/pages/notification_post_page.dart';
 import 'package:blue_fibre/ui/setting/pages/setting_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,11 +26,23 @@ class AppRouter {
         );
         break;
       case '/commentPage':
-        if (arguments is List<String>) {
+        if (arguments is List<dynamic>) {
           return MaterialPageRoute<Widget>(
             builder: (BuildContext context) => CommentPage(
-              postId: arguments[0],
-              postOwnerId: arguments[1],
+              postId: arguments[0] as String,
+              postOwnerId: arguments[1] as String,
+              imageUrls: List<String>.from(arguments[2] as List<String>),
+            ),
+          );
+        }
+        break;
+        case '/notificationPostPage':
+        if (arguments is List<dynamic>) {
+          return MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => NotificationPostPage(
+              postId: arguments[0] as String,
+              postOwnerId: arguments[1] as String,
+              imageUrls: List<String>.from(arguments[2] as List<String>),
             ),
           );
         }

@@ -7,22 +7,23 @@ import 'package:get_it/get_it.dart';
 class UpdatePostInfoRepo {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final CollectionReference _feedCollectionRef =
-  _firestore.collection(firebaseFeedCollectionRefName);
+      _firestore.collection(firebaseFeedCollectionRefName);
   static final CollectionReference _likesCollectionRef =
-  _firestore.collection(firebaseLikesCollectionRefName);
+      _firestore.collection(firebaseLikesCollectionRefName);
 
   Future<bool> checkIfLikedAlready(String postId) async {
     bool alreadyLiked;
+    LikesModel like;
+
     final QuerySnapshot querySnapshot = await _likesCollectionRef
         .where('postLikedId', isEqualTo: postId)
         .where('likerId',
-        isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
+            isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
         .get();
 
-
-    final LikesModel like = LikesModel.fromMap(
-        querySnapshot.docs?.first?.data());
-
+    if(querySnapshot.docs.isNotEmpty){
+      like = LikesModel.fromMap(querySnapshot.docs.first.data());
+    }
 
     if (querySnapshot.docs.isEmpty || like.liked == false) {
       alreadyLiked = false;
@@ -30,12 +31,15 @@ class UpdatePostInfoRepo {
       alreadyLiked = true;
     }
 
-
     return alreadyLiked;
   }
 
-  Future<void> likePost(String postId, String postOwnerId,
-      [String likeDocRef]) async {
+  Future<void> likePost(
+    String postId,
+    String postOwnerId, {
+        String likeDocRef,
+        List<String> imageUrls,
+      }) async {
     final WriteBatch _writeBatch = _firestore.batch();
 
     // update like count on post
@@ -52,6 +56,7 @@ class UpdatePostInfoRepo {
           likerId: GetIt.instance.get<AuthenticationRepo>().getUserUid(),
           postLikedId: postId,
           postOwnerId: postOwnerId,
+          imageUrls: imageUrls,
         ).toMap(),
       );
     } else {
@@ -61,6 +66,7 @@ class UpdatePostInfoRepo {
           likerId: GetIt.instance.get<AuthenticationRepo>().getUserUid(),
           postLikedId: postId,
           postOwnerId: postOwnerId,
+          imageUrls: imageUrls,
         ).toMap(),
       );
     }
@@ -71,9 +77,10 @@ class UpdatePostInfoRepo {
   Future<void> updatePostLike({
     String postId,
     String postOwnerId,
+    List<String> imageUrls,
   }) async {
     if (await checkIfLikedAlready(postId) == false) {
-      await likePost(postId, postOwnerId);
+      await likePost(postId, postOwnerId, imageUrls: imageUrls);
     } else {
       await _disLikePost(postId);
     }
@@ -85,8 +92,8 @@ class UpdatePostInfoRepo {
     final QuerySnapshot querySnapshot = await _likesCollectionRef
         .where('postLikedId', isEqualTo: postId)
         .where('likerId',
-        isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
-    // .where('liked', isEqualTo: true)
+            isEqualTo: GetIt.instance.get<AuthenticationRepo>().getUserUid())
+        // .where('liked', isEqualTo: true)
         .get();
 
     final DocumentSnapshot documentSnapshot = querySnapshot.docs?.first;

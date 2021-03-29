@@ -6,12 +6,13 @@ abstract class UpdatePostInfoEvent extends Equatable {
 
 class UpdateActionEvent extends UpdatePostInfoEvent {
   const UpdateActionEvent(
-      {this.postOperationType, this.postId, this.postOwnerId});
+      {this.postOperationType, this.postId, this.postOwnerId, this.imageUrls});
 
   final PostOperationType postOperationType;
   final String postId;
   final String postOwnerId;
+  final List<String> imageUrls;
 
   @override
-  List<Object> get props => [postOperationType, postOwnerId];
+  List<Object> get props => <Object>[postOperationType, postOwnerId, imageUrls];
 }

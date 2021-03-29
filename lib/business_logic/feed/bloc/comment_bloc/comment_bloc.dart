@@ -32,7 +32,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           postOwnerDetails: PostOwnerDetailsModel.fromMap(userData),
           commenterId: _auth.getUserUid(),
           commentId: Uuid().v1(),
-          imageUrls: <String>[],
+          imageUrls: event.imageUrls,
           postCommentId: event.postId,
           timestamp: Timestamp.now(),postOwnerId: event.postOwnerId,
         );

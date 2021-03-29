@@ -9,6 +9,7 @@ class NotificationModel {
     @required this.likerId,
     @required this.commenterId,
     @required this.postLikedId,
+    @required this.postImageUrl,
     @required this.postCommentId,
     @required this.comment,
     @required this.timestamp,
@@ -23,6 +24,7 @@ class NotificationModel {
       likerId: notificationMap['likerId'] as String,
       commenterId: notificationMap['commenterId'] as String,
       comment: notificationMap['comment'] as String,
+        postImageUrl: List<String>.from(notificationMap['imageUrls'] as List<dynamic> ?? <String>[]),
       postLikedId: notificationMap['postLikedId'] as String,
       postCommentId: notificationMap['postCommentId'] as String,
       timestamp: notificationMap['timestamp'] as Timestamp,
@@ -35,6 +37,7 @@ class NotificationModel {
   final String id;
   final String likerId;
   final String commenterId;
+  final List<String> postImageUrl;
   final String postLikedId;
   final String postCommentId;
   final String comment;

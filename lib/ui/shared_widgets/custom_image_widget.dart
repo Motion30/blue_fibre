@@ -23,12 +23,27 @@ class CustomImageWidget extends StatelessWidget {
         return Image.network(
           imageUrl,
           fit: BoxFit.fill,
+          loadingBuilder: (
+            BuildContext context,
+            Widget child,
+            ImageChunkEvent loadingProgress,
+          ) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes
+                    : null,
+              ),
+            );
+          },
         );
         break;
       case ImageWidgetType.file:
         return Image.file(
           imageFile,
-          fit:boxFit,
+          fit: boxFit,
         );
         break;
       case ImageWidgetType.asset:

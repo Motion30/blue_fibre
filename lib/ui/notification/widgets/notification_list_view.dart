@@ -22,7 +22,7 @@ class _NotificationListViewWidgetState
 
   void scrollController() {
     final GetNotificationsBloc bloc =
-        BlocProvider.of<GetNotificationsBloc>(context);
+    BlocProvider.of<GetNotificationsBloc>(context);
 
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
@@ -35,7 +35,8 @@ class _NotificationListViewWidgetState
 
   @override
   void initState() {
-    _controller = ScrollController()..addListener(() => scrollController());
+    _controller = ScrollController()
+      ..addListener(() => scrollController());
     // BlocProvider.of<GetNotificationsBloc>(context);
     super.initState();
   }
@@ -43,10 +44,27 @@ class _NotificationListViewWidgetState
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: const EdgeInsets.only(top: 15.0),
       controller: _controller,
       itemCount: widget.notifications.length,
       itemBuilder: (BuildContext context, int index) {
-        return NotificationItemWidget(widget.notifications[index]);
+        return Container(
+          margin: const EdgeInsets.only(bottom: 3.0),
+          // color: const Color(0xffbde3ff),
+          child: InkWell(
+            onTap: () =>
+                Navigator.of(context).pushNamed(
+                    'notificationPostPage', arguments:
+                <dynamic>[
+                  widget.notifications[index].postLikedId,
+                  widget.notifications[index].commenterId ??
+                      widget.notifications[index].likerId,
+                  widget.notifications[index].postImageUrl ?? <String>[],
+                ]
+                ),
+            child: NotificationItemWidget(widget.notifications[index]),
+          ),
+        );
       },
     );
   }

@@ -51,6 +51,8 @@ class GetNotificationsBloc
         hasMore = notifications.length == 10;
         yield LoadedGetNotificationsState(notifications);
       } catch (e, s) {
+        print(e);
+        print(s);
         yield ErrorGetNotificationsState(e?.message.toString());
       }
       isFetching = false;

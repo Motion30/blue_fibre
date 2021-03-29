@@ -8,6 +8,7 @@ class PostIconWidget extends StatelessWidget {
     @required this.icon,
     this.postId,
     this.postOwnerId,
+    this.imageUrls,
     this.postOperationType,
     this.isLiked = false,
   });
@@ -16,8 +17,8 @@ class PostIconWidget extends StatelessWidget {
   IconData icon;
   final String postId;
   final String postOwnerId;
+  final List<String> imageUrls;
   bool isLiked;
-  // final bool showLiked;
 
   void action(BuildContext context) {
     switch (postOperationType) {
@@ -26,13 +27,14 @@ class PostIconWidget extends StatelessWidget {
               postOwnerId: postOwnerId,
               postOperationType: postOperationType,
               postId: postId,
+            imageUrls: imageUrls,
               // postOperationType, postId,
             ));
 
-        if(isLiked){
+        if (isLiked) {
           isLiked = false;
           icon = Icons.favorite_border_outlined;
-        }else{
+        } else {
           isLiked = true;
           icon = Icons.favorite;
         }
@@ -40,7 +42,11 @@ class PostIconWidget extends StatelessWidget {
       case PostOperationType.comment:
         Navigator.of(context).pushNamed(
           '/commentPage',
-          arguments: <String>[postId, postOwnerId],
+          arguments: <dynamic>[
+            postId,
+            postOwnerId,
+            imageUrls,
+          ],
         );
         break;
       case PostOperationType.bookmark:

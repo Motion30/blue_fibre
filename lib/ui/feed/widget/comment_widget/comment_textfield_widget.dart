@@ -7,10 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommentPageTextField extends StatefulWidget {
-  const CommentPageTextField({@required this.postId, @required this.postOwnerId});
+  const CommentPageTextField({
+    @required this.postId,
+    @required this.postOwnerId,
+    @required this.imageUrls,
+  });
 
   final String postId;
   final String postOwnerId;
+  final List<String> imageUrls;
 
   @override
   _CommentPageTextFieldState createState() => _CommentPageTextFieldState();
@@ -60,8 +65,11 @@ class _CommentPageTextFieldState extends State<CommentPageTextField> {
                 if (_textEditingController.text.trim().isNotEmpty) {
                   BlocProvider.of<CommentBloc>(context).add(
                     AddCommentEvent(
-                        commentText: _textEditingController.text.trim(),
-                        postId: widget.postId, postOwnerId: widget.postOwnerId),
+                      commentText: _textEditingController.text.trim(),
+                      postId: widget.postId,
+                      postOwnerId: widget.postOwnerId,
+                      imageUrls: widget.imageUrls,
+                    ),
                   );
                 }
               },

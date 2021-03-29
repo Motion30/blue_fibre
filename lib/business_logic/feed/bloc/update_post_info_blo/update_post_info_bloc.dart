@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'update_post_info_event.dart';
-
 part 'update_post_info_state.dart';
 
 class UpdatePostInfoBloc
@@ -30,6 +29,7 @@ class UpdatePostInfoBloc
             await UpdatePostInfoRepo().updatePostLike(
               postId: event.postId,
               postOwnerId: event.postOwnerId,
+              imageUrls: event.imageUrls,
             );
             break;
           case PostOperationType.comment:

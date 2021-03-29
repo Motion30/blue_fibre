@@ -18,6 +18,7 @@ async function likeMonitor(admin_sdk, snap) {
     postLikedId: data.postLikedId,
     type: "likes",
     read: false,
+    imageUrls: data.imageUrls,
   };
 
   await setNotificationData(admin_sdk, postOwnerId, id, notificationData);
