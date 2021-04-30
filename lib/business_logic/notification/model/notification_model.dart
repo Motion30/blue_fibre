@@ -47,6 +47,23 @@ class NotificationModel {
   final PostOwnerDetailsModel postOwnerDetailsModel;
 
 
+  Map<String, dynamic> toMap() {
+    // ignore: unnecessary_cast
+    return <String, dynamic>{
+    'id': id,
+    'likerId': likerId,
+    'commenterId': commenterId,
+    'postImageUrl': postImageUrl,
+    'postLikedId': postLikedId,
+    'postCommentId': postCommentId,
+    'comment': comment,
+    'timestamp': timestamp,
+    'type': type,
+    'read': read,
+    'postOwnerDetailsModel': postOwnerDetailsModel,
+    };
+  }
+
 
 
 }

@@ -17,6 +17,24 @@ class GetFeedRepo {
   DocumentSnapshot _lastDoc;
   bool _hasMore = true;
 
+  Future<PostModel> getSinglePostById(String postId) async {
+    final DocumentSnapshot documentSnapshot =
+        await _postCollectionRef.doc(postId).get();
+
+    print(documentSnapshot.data());
+
+    final bool _isLiked = await GetIt.instance
+        .get<UpdatePostInfoRepo>()
+        .checkIfLikedAlready(postId);
+
+    final PostModel post = PostModel.fromMap(
+      documentSnapshot.data(),
+      isLiked: _isLiked,
+    );
+
+    return post;
+  }
+
   Future<List<PostModel>> fetchPost({
     bool reload = false,
     bool personalPostOnly = false,

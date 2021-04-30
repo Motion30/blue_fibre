@@ -7,6 +7,7 @@ import 'package:blue_fibre/business_logic/notification/bloc/get_notification/get
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'business_logic/feed/bloc/get_single_post_bloc/get_single_post_bloc.dart';
 import 'business_logic/profile/bloc/get_profile_details/get_profile_details_bloc.dart';
 
 List<BlocProvider<Cubit<Object>>> blocList() {
@@ -31,5 +32,8 @@ List<BlocProvider<Cubit<Object>>> blocList() {
     BlocProvider<GetProfileDetailsBloc>(
       create: (BuildContext context) => GetProfileDetailsBloc()..add(const GetUserProfileEvent()),
     ),
+    BlocProvider<GetSinglePostBloc>(
+      create: (BuildContext context) => GetSinglePostBloc()),
+
   ];
 }

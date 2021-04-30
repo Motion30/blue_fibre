@@ -36,7 +36,8 @@ class AppRouter {
           );
         }
         break;
-        case '/notificationPostPage':
+      case '/notificationPostPage':
+        print(arguments);
         if (arguments is List<dynamic>) {
           return MaterialPageRoute<Widget>(
             builder: (BuildContext context) => NotificationPostPage(
@@ -49,12 +50,14 @@ class AppRouter {
         break;
 
       default:
-        return MaterialPageRoute<Widget>(builder: (BuildContext context) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Error Navigator')),
-            body: const Center(child: Text('Error')),
-          );
-        });
+        return MaterialPageRoute<Widget>(
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(title: const Text('Error Navigator')),
+              body: const Center(child: Text('Error Navigating')),
+            );
+          },
+        );
     }
   }
 }

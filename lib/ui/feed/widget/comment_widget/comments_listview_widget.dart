@@ -7,13 +7,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CommentListViewWidget extends StatefulWidget {
   const CommentListViewWidget({
     this.comments,
+    this.shrinkWrap = false,
     this.loading,
     this.callback,
+    this.scrollPhysics = const BouncingScrollPhysics(
+      parent: AlwaysScrollableScrollPhysics(),
+    ),
   });
 
   final List<CommentModel> comments;
   final bool loading;
+  final bool shrinkWrap;
   final Function callback;
+  final ScrollPhysics scrollPhysics;
 
   @override
   _CommentListViewWidgetState createState() => _CommentListViewWidgetState();
@@ -41,8 +47,8 @@ class _CommentListViewWidgetState extends State<CommentListViewWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        shrinkWrap: widget.shrinkWrap,
+      physics: widget.scrollPhysics,
       controller: _controller,
       separatorBuilder: (_, int index) => const Divider(),
       padding: const EdgeInsets.only(bottom: 20.0),

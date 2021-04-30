@@ -8,9 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommentBodyWidget extends StatefulWidget {
-  const CommentBodyWidget({this.postId});
+
+
+  const CommentBodyWidget({
+    this.postId,
+    this.shrinkWrap = false,
+    this.scrollPhysics = const BouncingScrollPhysics(
+      parent: AlwaysScrollableScrollPhysics(),
+    ),
+  });
 
   final String postId;
+  final bool shrinkWrap;
+  final ScrollPhysics scrollPhysics;
 
   @override
   _CommentBodyWidgetState createState() => _CommentBodyWidgetState();
@@ -69,7 +79,7 @@ class _CommentBodyWidgetState extends State<CommentBodyWidget> {
 
             if (_comments.isEmpty) {
               return ListView(
-                padding:  EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.30,
                 ),
                 children: const <Widget>[
@@ -79,6 +89,8 @@ class _CommentBodyWidgetState extends State<CommentBodyWidget> {
             }
 
             return CommentListViewWidget(
+              shrinkWrap: widget.shrinkWrap,
+              scrollPhysics: widget.scrollPhysics,
               comments: _comments
                   .map((DocumentSnapshot e) => CommentModel.fromMap(e.data()))
                   .toList(),

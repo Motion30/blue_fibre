@@ -7,10 +7,12 @@ class CommentPage extends StatelessWidget {
     @required this.postId,
     @required this.postOwnerId,
     @required this.imageUrls,
+    this.shrinkWrap = false
   });
 
   final String postId;
   final String postOwnerId;
+  final bool shrinkWrap;
   final List<String> imageUrls;
 
   @override
@@ -19,7 +21,7 @@ class CommentPage extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            CommentBodyWidget(postId: postId),
+            CommentBodyWidget(postId: postId, shrinkWrap: shrinkWrap),
             const Divider(),
             Align(
               alignment: Alignment.bottomCenter,

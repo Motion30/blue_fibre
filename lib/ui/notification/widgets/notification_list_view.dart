@@ -1,5 +1,6 @@
 import 'package:blue_fibre/business_logic/notification/bloc/get_notification/get_notifications_bloc.dart';
 import 'package:blue_fibre/business_logic/notification/model/notification_model.dart';
+import 'package:blue_fibre/ui/notification/pages/notification_post_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,7 @@ class _NotificationListViewWidgetState
 
   void scrollController() {
     final GetNotificationsBloc bloc =
-    BlocProvider.of<GetNotificationsBloc>(context);
+        BlocProvider.of<GetNotificationsBloc>(context);
 
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange &&
@@ -35,8 +36,7 @@ class _NotificationListViewWidgetState
 
   @override
   void initState() {
-    _controller = ScrollController()
-      ..addListener(() => scrollController());
+    _controller = ScrollController()..addListener(() => scrollController());
     // BlocProvider.of<GetNotificationsBloc>(context);
     super.initState();
   }
@@ -52,16 +52,29 @@ class _NotificationListViewWidgetState
           margin: const EdgeInsets.only(bottom: 3.0),
           // color: const Color(0xffbde3ff),
           child: InkWell(
-            onTap: () =>
-                Navigator.of(context).pushNamed(
-                    'notificationPostPage', arguments:
-                <dynamic>[
-                  widget.notifications[index].postLikedId,
-                  widget.notifications[index].commenterId ??
-                      widget.notifications[index].likerId,
-                  widget.notifications[index].postImageUrl ?? <String>[],
-                ]
+            onTap: () {
+              // Navigator.of(context).pushNamed(
+              //     'notificationPostPage', arguments:
+              // <dynamic>[
+              //   widget.notifications[index].postLikedId,
+              //   widget.notifications[index].commenterId ??
+              //       widget.notifications[index].likerId,
+              //   widget.notifications[index].postImageUrl ?? <String>[],
+              // ]
+              // );
+
+              Navigator.of(context).push(
+                MaterialPageRoute<Widget>(
+                  builder: (BuildContext context) => NotificationPostPage(
+                    postId: widget.notifications[index].postCommentId ?? widget.notifications[index].postLikedId,
+                    postOwnerId: widget.notifications[index].commenterId ??
+                        widget.notifications[index].likerId,
+                    imageUrls:
+                        widget.notifications[index].postImageUrl ?? <String>[],
+                  ),
                 ),
+              );
+            },
             child: NotificationItemWidget(widget.notifications[index]),
           ),
         );
